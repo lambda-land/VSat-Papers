@@ -3,25 +3,42 @@
 
 ### Layout
 - data for plots in the paper are in `data` directory
-- statistics scripts in the `statistics` directory
-  - we also provide Rmarkdown files to provide a walkthrough of the analysis
 - Complete inference rules available in `rules.pdf` file
-- We provide `*.nix` files in the `nix` directory, which pin the development
-  environment used in the benchmarks and analysis to specific commits of
-  `nixpkgs`. This allows researchers to create a development environment
-  identical to the one used in this paper for both the `vsat` tool and for the
-  statistics scripts, in a `nix-shell`; Use `nix-shell shell.nix` for the
-  Haskell environment, and `nix-shell R.nix` for the `R` environment
+- We provide several files in the spirit of [reproducible
+  research](https://en.wikipedia.org/wiki/Reproducibility#Reproducible_research),
+  such that other researchers can not only reproduce our analysis but reproduce
+  _the exact environment_ of our analysis. This is done in several ways:
+    - the `*.nix` files in the `nix` directory, pin the development environment
+      used in the benchmarks and analysis to specific commits of `nixpkgs` which
+      are dated for the time of publication. This allows researchers to create a
+      development environment identical to the one used in this paper for both
+      the `vsat` tool and for the statistics scripts, in a `nix-shell`; Use `>
+      nix-shell shell.nix` for the Haskell environment, and `> nix-shell R.nix`
+      for the `R` environment
+    - We provide the source code R scripts used in our evaluation in the
+      `statistics/scripts` directory
+    - We provide RMarkdown files and the resulting `pdf` files to walk other
+      researchers through the analysis. Compiling to a pdf not only archives the
+      analysis but also the code used for the analysis
+    - The vsat tool can be built using either `cabal`, `stack` or `nix`. All
+      three allow a reproduction of the tool down to the library and compiler
+      version. We provide the `vsat.cabal` file, `package.yaml, and stack.yaml`
+      and `nix/release.nix` such that the tool can be rebuilt. We recommend
+      `stack` for most cases
 
 
 ### The Vsat tool
 You can find version of Vsat for this paper [here](https://github.com/doyougnu/VSat).
 
 #### Benchmarking
-Run a benchmark using stack + gauge,e.g., `stack bench vsat:auto --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv`
+Run a benchmark using stack + gauge,e.g., `stack bench vsat:auto
+--benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv`
+If you are not using `nix` or `nixOs` you'll need to change the `nix` option in
+`stack.yaml` and set `enable: false`
 
-Add a `csvraw` argument to get the bootstrapped averages _and_ the raw measurements from gauge:
-`stack bench vsat:auto --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv --csvraw raw-output.csv`
+Add a `csvraw` argument to get the bootstrapped averages _and_ the raw
+measurements from gauge: `stack bench vsat:auto --benchmark-arguments='+RTS -qg
+-A64m -AL128m -n8m -RTS --csv output-file.csv --csvraw raw-output.csv`
 
 
 The available benchmarks are listed benchmark targets in `package.yaml` in the vsat Haskell project:
