@@ -8,7 +8,7 @@ output:
 theme: prettydoc
 ---
 
-Hello, in this walk-through we'll performing the significance testing on the
+Hello, in this walk-through we'll perform the significance testing on the
 financial and automotive datasets in light of the non-normality results from the
 `rq1_rq3` walk through. We are assuming you have read that walk-through first.
 

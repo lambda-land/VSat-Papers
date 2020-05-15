@@ -1,0 +1,207 @@
+---
+title: "Rq2 reproduction"
+author: "Jeffrey M. Young"
+date: "15 May 2020"
+output:
+  pdf_document:
+        latex_engine: xelatex
+theme: prettydoc
+---
+
+In this walk-through we'll perform the plot generation and significance testing
+for rq2. We assume you have read the `rq1_rq3` and `sigTest` walk-throughs, in
+that order.
+
+### Preliminaries
+First, libraries, note that I have silenced the shadowing warnings from R:
+```{r message=FALSE}
+library(ggplot2)   #plotting
+library(dplyr)     #dataframe manipulation
+library(tidyr)     #dataframe manipulation
+library(broom)     #for the tidy function
+library(scales)    #for scientific function
+library(latex2exp) #for TeX in Labels
+library(ggpubr)    #for stat_cor
+```
+
+Load the data, and perform some simple munging to select relevant columns
+```{r data}
+finResultsFile <- "../../data/fin_comp_data.csv"
+autoResultsFile <- "../../data/auto_comp_data.csv"
+
+finData <- read.csv(file=finResultsFile) %>%
+  mutate(Algorithm = as.factor(Algorithm), Config = as.factor(Config))
+
+autoData <- read.csv(file=autoResultsFile) %>%
+  mutate(Algorithm = as.factor(Algorithm), Config = as.factor(Config))
+
+finDF <- finData %>% mutate(data = "Fin") %>%
+  select(Mean, Algorithm, CompressionRatio, data, ChcCount, PlainCount, Config)
+
+autoDF <- autoData %>% mutate(data = "Auto") %>%
+  select(Mean, Algorithm, CompressionRatio, data, ChcCount, PlainCount, Config)
+```
+
+### Visualization
+Now the sharing ratio must be calculated, this is performed via a `spread` and
+`mutate` operation. `spread` transforms long data into wide data, note that it
+has been recently deprecated and replaced with `pivot_wider`, see the
+`tidyverse` documentation for details
+[here](https://tidyr.tidyverse.org/reference/spread.html). We use `spread` just
+for convienience and familiarity. Now we find the sharing ratio for each
+Algorithm, and construct a data frame for each dataset:
+
+```{r autoMunge}
+## finding the sharing ratios for auto
+autoPtoP <- autoDF %>% group_by(Algorithm, Config) %>%
+  filter(Algorithm == "v-->p" || Algorithm == "p-->p") %>%
+  spread(Algorithm, Mean) %>% mutate(MeanRatio = (`v-->p` / `p-->p`)) %>%
+  select(-"v-->p", -"p-->p")  %>% mutate(Algorithm = "p\U27f6p")
+
+autoVtoV <- autoDF %>% group_by(Algorithm, Config) %>%
+  filter(Algorithm == "v-->p" || Algorithm == "v-->v") %>%
+  spread(Algorithm, Mean) %>% mutate(MeanRatio = (`v-->p` / `v-->v`)) %>%
+  select(-"v-->v", -"v-->p") %>% mutate(Algorithm = "v\U27f6v")
+
+autoPtoV <- autoDF %>% group_by(Algorithm, Config) %>%
+  filter(Algorithm == "v-->p" || Algorithm == "p-->v") %>%
+  spread(Algorithm, Mean) %>% mutate(MeanRatio = (`v-->p` / `p-->v`)) %>%
+  select(-"v-->p", -"p-->v") %>% mutate(Algorithm = "p\U27f6v")
+
+## construct auto data frame
+autoSharedDF <- rbind(autoPtoP, autoVtoV, autoPtoV)
+```
+
+and for `financial`:
+
+```{r finMunge}
+## finding the sharing ratios for fin
+finPtoP <- finDF %>% group_by(Algorithm, Config) %>%
+  filter(Algorithm == "v-->p" || Algorithm == "p-->p") %>%
+  spread(Algorithm, Mean) %>% mutate(MeanRatio = (`v-->p` / `p-->p`)) %>%
+  select(-"v-->p", -"p-->p") %>% mutate(Algorithm = "p\U27f6p")
+
+finVtoV <- finDF %>% group_by(Algorithm, Config) %>%
+  filter(Algorithm == "v-->p" || Algorithm == "v-->v") %>%
+  spread(Algorithm, Mean) %>% mutate(MeanRatio = (`v-->p` / `v-->v`)) %>%
+  select(-"v-->v", -"v-->p") %>% mutate(Algorithm = "v\U27f6v")
+
+finPtoV <- finDF %>% group_by(Algorithm, Config) %>%
+  filter(Algorithm == "v-->p" || Algorithm == "p-->v") %>%
+  spread(Algorithm, Mean) %>% mutate(MeanRatio = (`v-->p` / `p-->v`)) %>%
+  select(-"v-->p", -"p-->v") %>% mutate(Algorithm = "p\U27f6v")
+
+## construct fin data frame
+finSharedDF <- rbind(finPtoP, finVtoV, finPtoV)
+```
+
+Now the data frames are combined and the plot can be generated:
+
+```{r rq2Plot, fig.width=7, height=4, warning=FALSE}
+## make the data frame
+df <- rbind(autoSharedDF, finSharedDF) %>%
+         ## calculate the ratio of plain terms to total terms, i.e., the sharing ratio
+  mutate(PlainRatio = PlainCount / (ChcCount + PlainCount),
+         ## get the converse ratio at the same time
+         ChcRatio = ChcCount / (ChcCount + PlainCount))
+
+## make the plot as a function of plain ratio to mean ratio
+ggplot(df, mapping = aes(x=PlainRatio, y=MeanRatio, colour = Algorithm, shape = Algorithm)) +
+  ## it is a scatter plot
+  geom_point(size=3, alpha=0.7) +
+  ylab("% SpeedUp") +
+  ## insert LaTeX into the x-axis labels
+  xlab(TeX("Plain Ratio:  $\\frac{|Plain Terms|}{|Total Terms|}}")) +
+  ## manually scale shapes so the algorithms have the same shape over different plots
+  scale_shape_manual(values = c(1,6,17)) +
+  ## add the confidence intervals, using a linear regression, alpha makes these more
+  ## transparent, se adds the shadings for the 95% confidence intervals
+  geom_smooth(method=lm, formula = y ~ x, se=TRUE, alpha=0.15) +
+  ggtitle("RQ2: Performance as a function of plain ratio") +
+  theme_classic() +
+  ## stat_cor calculates the R^2 values, that are placed next to the legend
+  stat_cor(aes(color=Algorithm),
+           label.x=0.74, label.y.npc=c(0.91, 0.89, 0.88)) +
+  theme(legend.position = c(0.07, 0.83))
+```
+
+### Statistical Significance
+
+We perform the same two way ANOVA to ensure fair comparisons:
+
+```{r aov}
+### Perform the anova
+res.aov <- aov(MeanRatio ~ PlainRatio * Algorithm, data = df)
+res.aov
+```
+
+```{r sum.aov}
+### Check the summary to see what is significant, all of it is as expected
+summary(res.aov)
+```
+
+We see that `Algorithm`, `PlainRatio`, and their interaction are significant.
+This makes sense given then nature of the tool and analysis. We perform a `Tukey
+pair-wise` comparison to check the significantly different comparisons in the
+dataset.
+
+```{r aov.tuk, message=FALSE, warning=FALSE}
+### perform the pair-wise Tukey comparison to test the difference
+### between groups
+TukeyHSD(res.aov) %>% tidy %>% mutate(pVal = scientific(adj.p.value, 3))
+```
+
+We observe that `v-->v` differs from the other algorithms, and the difference is
+statistically significant. Next, we check the residuals to assess normality.
+
+```{r resids}
+res.ass <- plot(res.aov, 2)
+```
+
+Residuals looks good and there three outliers, which agrees with other analyses.
+To verify, we perform the `Shapiro-Wilks` test, identically to `rq3`.
+
+```{r shap.aov}
+aov.resids <- residuals(object=res.aov)
+
+## Shapiro-Wilk normality test
+shapiro.test(x = aov.resids)
+```
+
+Unfortunately, We see that again the dataset violates the assumptions of the
+ANOVA test, so we perform the Kruskal-Wallis test instead:
+
+```{r comp.kw}
+## Algorithms are significant
+kruskal.test(MeanRatio ~ Algorithm, df)
+```
+
+Algorithms are found to be statistically different as expected.
+
+```{r comp.pr}
+## Plain ratio is not significant!!
+kruskal.test(MeanRatio ~ PlainRatio, df)
+```
+
+Plain ratio, interestingly is found not to be statistically different, which
+agrees with the ANOVA analysis.
+
+```{r comp.int}
+## Interaction is not significant surprisingly
+rq2.inters <- interaction(df$Algorithm, df$PlainRatio)
+kruskal.test(MeanRatio ~ rq2.inters, df)
+```
+
+However, when accounting for Algorithms, i.e., when analyzing the interaction
+between the two, we find the interaction is just barely significant. We perform
+the `Pairwise Wilcox test` to check what exactly is significant:
+
+```{r pairs}
+## Show the pairs which are significant
+pairwise.wilcox.test(df$MeanRatio, df$Algorithm,
+                              p.adj="bonf" , exact=TRUE, paired=FALSE) %>%
+  tidy %>% arrange(p.value)
+```
+
+We find that `v-->v` is statistically different from the other algorithms,
+confirming the hypothesis for `rq2`

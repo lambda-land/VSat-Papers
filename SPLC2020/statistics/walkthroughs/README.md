@@ -2,8 +2,8 @@
 
 Please find each walkthrough `pdf` describing the analysis already compiled for
 your convenience. If you would like to setup the same development environment to
-tinker with the analysis scripts or data you'll need to construct a `nix-shell`.
-We have written the `nix` files for you, the workflow is:
+tinker with the analysis scripts or data you'll need to use `nix-shell`. We have
+written the `nix` files for you, the workflow is:
 
 ```
 $ nix-shell ../../nix/R.nix ## load the pinned R environment
