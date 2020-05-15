@@ -27,11 +27,16 @@ Add a `csvraw` argument to get the bootstrapped averages _and_ the raw measureme
 The available benchmarks are listed benchmark targets in `package.yaml` in the vsat Haskell project:
   - run the automotive dataset
     - `stack bench vsat:auto --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
-  - run the financial dataset: `stack bench vsat:fin --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
-  - run the core/dead on auto: `stack bench vsat:auto-dead-core --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
-  - run the core/dead on fin: `stack bench vsat:fin-dead-core --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
-  - run variational model diagnostics on fin: `stack bench vsat:fin-diag --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
-  - run variational model diagnostics on auto: `stack bench vsat:auto-diag --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
+  - run the financial dataset
+    - `stack bench vsat:fin --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
+  - run the core/dead on auto
+    - `stack bench vsat:auto-dead-core --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
+  - run the core/dead on fin
+    - `stack bench vsat:fin-dead-core --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
+  - run variational model diagnostics on fin:
+    - `stack bench vsat:fin-diag --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
+  - run variational model diagnostics on auto:
+    - `stack bench vsat:auto-diag --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
 
 To retrieve the counts of sat vs unsat models you can count the disjuncted
 clauses in the resulting variational model. The papers cited in the paper come
