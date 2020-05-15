@@ -21,12 +21,12 @@ You can find version of Vsat for this paper [here](https://github.com/doyougnu/V
 Run a benchmark using stack + gauge,e.g., `stack bench vsat:auto --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv`
 
 Add a `csvraw` argument to get the bootstrapped averages _and_ the raw measurements from gauge:
-```
-stack bench vsat:auto --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv --csvraw raw-output.csv
-```
+`stack bench vsat:auto --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv --csvraw raw-output.csv`
+
 
 The available benchmarks are listed benchmark targets in `package.yaml` in the vsat Haskell project:
-  - run the automotive dataset: `stack bench vsat:auto --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
+  - run the automotive dataset
+    - `stack bench vsat:auto --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
   - run the financial dataset: `stack bench vsat:fin --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
   - run the core/dead on auto: `stack bench vsat:auto-dead-core --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
   - run the core/dead on fin: `stack bench vsat:fin-dead-core --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
