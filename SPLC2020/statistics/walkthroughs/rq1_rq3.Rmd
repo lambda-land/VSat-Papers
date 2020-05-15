@@ -1,0 +1,359 @@
+---
+title: "Reproducing Rq1 and Rq3"
+author: "Jeffrey M. Young"
+date: "15 May 2020"
+output:
+  pdf_document:
+        latex_engine: xelatex
+theme: prettydoc
+---
+
+Hello, in this walkthrough we'll be the data analysis and generating the
+plots for rq1, and rq3.
+
+First the usual invocations for libraries, note that I have silenced the shadowing warnings from R:
+```{r message=FALSE}
+library(ggplot2) #plotting
+library(dplyr)   #dataframe manipulation
+library(tidyr)   #dataframe manipulation
+library(broom)   #for the tidy function
+library(scales)  #for scientific function
+```
+
+Now let's load the data, we immediately pipe this with dplyr for conveniences
+like manipulating the arrow in v-->v to look nice and making factors. The Name
+column is dropped because it is large and separated to the other columns. We use
+the name `Config` to stand for version variants throughout the scripts.
+
+```{r, data}
+## Pound signs are comments
+## leftarrow (<-) is assignment, `=` also is assignment but their meanings subtly differ
+## <- is the accepted default
+finResultsFile  <- "../../data/fin_data.csv"
+autoResultsFile <- "../../data/auto_data.csv"
+finRawFile      <- "../../data/fin_rq3_singletons.csv"
+autoRawFile     <- "../../data/auto_rq3_singletons.csv"
+
+finData <- read.csv(file=finResultsFile) %>%
+  ## %>% pipes, similar to `|` in Unix, (.) in Haskell, and |> in Julia
+  mutate(Algorithm = as.factor(Algorithm), Config = as.factor(Config)) %>%
+  mutate(Algorithm = gsub("-->", "\U27f6", Algorithm)) %>% select(-Name)
+
+autoData <- read.csv(file=autoResultsFile) %>%
+  ## mutate changes a column on the left hand side of = by the RHS
+  mutate(Algorithm = as.factor(Algorithm), Config = as.factor(Config)) %>%
+  mutate(Algorithm = gsub("-->", "\U27f6", Algorithm)) %>% select(-Name)
+
+### we can also add columns with mutate, _and_ keep the rest of the data frame
+### in this example we add the `data` column for each dataset
+finDF <- finData %>% mutate(data = "Fin")
+autoDF <- autoData %>% mutate(data = "Auto")
+
+data <- rbind(finDF, autoDF)
+
+### show the structure of the data
+str(data)
+```
+
+## RQ1: Performance as variant count increases
+Most of this should be explanatory if you are referencing the paper as well. The
+majority of the statistics such as `stddevLB` are not used but included for the
+interested. For each research question we construct the proper data frame, e.g.,
+`rq1DF` by mutating or filtering `data`:
+
+```{r rq1DF}
+rq1DF <- data %>%
+  filter(Variants >= 2) %>%
+  group_by(Algorithm) %>%
+  arrange(Variants)
+```
+
+We filter here because `data` includes singleton times as well. A singleton, in
+this analysis, is the result data entry where a version variant was solved as a
+plain formula. For rq1, we need to filter out the data where `Variants == 2`,
+which correspond to VPL formulas which solved only a single version variant.
+This is in contrast with the data which composes rq3, for rq3, we transformed
+all version variant formulas to plain propositional formulas to assess overhead.
+Thus, these formulas have `Variants == 0` because they are plain. Note that for
+most analyses we'll be using the `group_by` verb to not mix the datasets. Now we
+can plot rq1 with `ggplot`:
+
+
+```{r rq1plot_construction, fig.width=7, fig.height=4}
+## custom breaks on the x-axis for each dataset
+breaksRq1 <- function(x) {
+  if (max(x) > 16) {
+    2^(1:10)
+  } else {
+    2^(1:4)}
+  }
+
+## we use Hadley Wickham's ggplot for plotting, the first line invokes a ggplot object
+rq1 <- ggplot(rq1DF) +
+  ## we add lines and a point to the plot
+  geom_line(aes(x=Variants, y=Mean/60, color=Algorithm)) +
+  geom_point(aes(x=Variants, y=Mean/60, shape=Algorithm, color=Algorithm),size=3) +
+  ## then we scale the values manually so algorithms have the same shape in each plot
+  scale_shape_manual(values = c(1,6,5,17)) +
+  ## change the x-axis tick marks according to our breaking function
+  scale_x_continuous(breaks=breaksRq1, limits=c(2,NA)) +
+  ## create sub plots by the `data` column
+  facet_wrap(. ~ data, scales = "free") +
+  ## a clean publication ready theme
+  theme_classic() +
+  ## titles
+  ggtitle("RQ1: Performance as variants increase") +
+  ylab("Time [Min.] to solve all Variants") +
+  ## change the legend position
+  theme(legend.position = c(0.6,0.75))
+```
+
+Most of this is fine tuning for a nice plot. The plot is just a line plot with
+points for emphasis. We use the clean classic theme, and move the legend
+manually to render well with LaTeX. We scale the y-axis to minutes and manually
+select shapes for the algorithms so that each algorithm uses the same shape
+across all of the plots. Finally we facet by dataset. Rmarkdown has problems
+with the algorithm arrow so I have muted the warnings. This is the publication
+quality plot, sans the arrows of course:
+
+```{r, fig.width=7, fig.height=4, warning=FALSE}
+rq1
+```
+
+And here is the same plot with a log scale x-axis so you can see data at lower
+variant count:
+
+```{r rq1Plotlog, fig.width=7, fig.height=4, warning=FALSE}
+ggplot(rq1DF) +
+  geom_line(aes(x=Variants, y=Mean/60, color=Algorithm)) +
+  geom_point(aes(x=Variants, y=Mean/60, shape=Algorithm, color=Algorithm),size=3) +
+  scale_shape_manual(values = c(1,6,5,17)) +
+  scale_x_log10(breaks=breaksRq1, limits=c(2,NA)) +
+  facet_wrap(. ~ data, scales = "free") +
+  theme_classic() +
+  ggtitle("RQ1: Performance as variants increase") +
+  ylab("Time [Min.] to solve all Variants") +
+  theme(legend.position = c(0.6,0.75))
+```
+
+## RQ3: Overhead of variational solving
+For this analysis we need to filter data for the complement data set of rq1:
+
+```{r rq3DF}
+rq3DF <- data %>% filter(ChcCount == 0) %>%
+  mutate(plotOrdering = as.numeric(substring(Config, 2))) %>%
+  mutate(Config = factor(Config, levels = c("V1", "V2", "V3", "V4", "V5", "V6",
+                                            "V7", "V8", "V9", "V10")))
+```
+
+Again, we just add some niceties to order the versions in the `rq3` plot and
+remove all data that was run on variational formulas. Now to generate the plot
+we use a custom breaking function again, to have the proper axis scale for each
+sub-plot (or facet in R terminology):
+
+```{r rq3PubPlot, fig.width=7, fig.height=4, warning=FALSE}
+## custom breaks for the facets
+breaksRq3 <- function(x) {
+  if (max(x) < 4) {
+    ## then we are in fin, NA to just have R find the max
+    seq(0, 1.2, 0.10)
+  } else {
+    seq(0, 150, 10)
+  }
+}
+
+ggplot(rq3DF, aes(x=Config, y=Mean, fill=Algorithm, shape=Algorithm, color=Algorithm)) +
+  geom_point(size=6) +
+  scale_shape_manual(values = c(1,6,5,17)) +
+  theme_classic() +
+  scale_y_continuous(limits=c(0, NA), breaks=breaksRq3) +
+  facet_wrap(.~ data, scales="free") +
+  ggtitle("RQ3: Overhead of Variational Solving on Plain Formulas") +
+  ylab("Time [s] to solve single version variant") +
+  xlab("Feature Model Version") +
+  theme(legend.position = c(0.42,0.75),
+        legend.key.size = unit(.65,'cm')) +
+  theme(panel.grid.major.y = element_line(color = "grey")) +
+  coord_flip()
+```
+
+Note that we `coord_flip` to put versions on the y-axis. We chose this format to
+show lots of comparisons succinctly. We can also calculate the exact slowdowns
+with the dataset now:
+
+```{r slowdown}
+rq3DF %>% group_by(data,Algorithm) %>%  summarise(AvgMean = mean(Mean))
+```
+
+but a box plot or something similar of the raw values will give a clearer
+picture of the distributions. We'll reuse this data for the two way anova:
+
+```{r sinData_Input, fig.width=7, fig.height=4, warning=FALSE}
+finSingData <- read.csv(file=finRawFile) %>%
+  mutate(Algorithm = as.factor(Algorithm), Config = as.factor(Config)) %>%
+  mutate(Algorithm = gsub("-->", "\U27f6", Algorithm), data = "Financial") %>%
+  group_by(Algorithm, Config) %>%
+  mutate(TimeCalc = time -append(0,head(time, -1))) %>% filter(TimeCalc > 0)
+
+
+autoSingData <- read.csv(file=autoRawFile) %>%
+  mutate(Algorithm = as.factor(Algorithm), Config = as.factor(Config)) %>%
+  mutate(Algorithm = gsub("-->", "\U27f6", Algorithm), data = "Auto") %>%
+  group_by(Algorithm, Config) %>%
+  mutate(TimeCalc = time -append(0,head(time, -1))) %>% filter(TimeCalc > 0)
+
+### combine the data sets
+singData <- rbind(finSingData, autoSingData)
+```
+
+For the raw data we use a special function to calculate the offset time the
+benchmark library `gauge` returned. This is essentially a `zipWith (-) l1 l2`
+where l2 is shifted l1 by a single element. Let's peek at the data:
+
+```{r sinPeak, fig.width=7, fig.height=4, warning=FALSE}
+peek <- singData %>%
+  select(data,Config,Algorithm,TimeCalc) %>%
+  group_by(data, Config, Algorithm) %>%
+  summarise(Mean = mean(TimeCalc), Stddev = sd(TimeCalc))
+
+peek %>% head
+```
+
+We can see there is a lot of variance in some of the samples. We can visualize
+the distribution with a violin plot for each config, facet by algorithm to see a
+matrix of sub plots that shows the sample distribution of each version variant
+(Config) and each algorithm:
+
+```{r sinData, fig.width=10, fig.height=10, warning=FALSE}
+ggplot(singData, aes(x=Config, y=TimeCalc)) +
+  geom_violin(aes(color=Algorithm)) +
+  geom_jitter(width=0.2, alpha=0.15) +
+  theme_classic() +
+  scale_y_continuous(limits=c(0, NA), breaks=breaksRq3) +
+  facet_grid(data ~ Algorithm, scales="free") +
+  ggtitle("RQ3: Overhead of Variational Solving on Plain Formulas") +
+  ylab("Time [s] to solve single version variant") +
+  xlab("Feature Model Version") +
+  theme(panel.grid.major.x = element_line(color = "grey"),
+  legend.position="bottom", axis.text.x=element_text(angle=90))
+```
+
+Notice the amount of variance (height of the violins) which exists in raw data,
+and clearly that `v-->v` has a slowdown for `financial`. Let's confirm the
+differences between algorithms and groups with a two-way ANOVA:
+
+### RQ3: Statistical Comparisons
+We demonstrate the two-way ANOVA on `financial` and show the normality
+assumption is violated. This analysis is in the bottom of `rq1_rq3.R` and
+`sigTest.R`. We'll perform the analysis on `financial` first and leave `auto`
+for the interested reader (who can also simply uncomment the code in the
+aforementioned R scripts if they so choose):
+
+First we perform the ANOVA on the raw data
+```{r finANOVA}
+### Do a two-way anova looking at both Algorithm, Config and their interaction
+res.fin.aov <- aov(TimeCalc ~ Algorithm * Config, data = finSingData)
+```
+
+Here we tell `R` that we want to test the dependent variable `TimeCalc` as a
+function of two independent variables `Algorithm` and `Config`, _and_ the
+interaction `Algorithm:Config`, i.e., `TimeCalc ~ Algorithm + Config +
+Algorithm:Config`. Let's have a look at the model:
+
+```{r fin.aov}
+res.fin.aov
+```
+
+It is strange that the sum of squares reduces in magnitude by an order of
+magnitude for the `Algorithm:Config` interaction. Now we check to see which
+combinations are significant, `R` automatically calculates an adjusted `p-value`
+to control for family-wise error rate (error introduced by performing many
+tests):
+
+```{r fin.aov.sigs}
+### Check the summary to see what is significant
+summary(res.fin.aov)
+```
+
+We see that both `Algorithm` and `Config` are significant. We expect at least
+`Config` to be significant because different SAT problems are likely to have
+different run-times. It is strange that two independent variables are
+significant, but not their interaction is not, especially for the magnitude of
+`f-values` being reported, and for the nature the object of analysis (i.e., a
+machine, not a biological system). Next we perform the `Tukey-pairwise
+comparison` to see _exactly_ which combinations are significant.
+
+```{r fin.tuk}
+## perform the analysis
+TukeyHSD(res.fin.aov, which = "Algorithm:Config") %>%
+  tidy %>%
+  ### cleanup
+  separate(comparison, sep=c(3, 4, 7, 11)
+         , into = c("AlgLeft", "Dump", "ConfigLeft", "AlgRight", "ConfigRight")) %>%
+  mutate(ConfigLeft = gsub("-", "", ConfigLeft),
+         ConfigRight = gsub(":","", ConfigRight),
+         AlgRight = gsub(":|-", "", AlgRight),
+         data = "Financial",
+         pVal = scientific(adj.p.value, 3)) %>%
+  select(-Dump) %>%
+  ## remove out-group comparisons between different variants, e.g., V1 compared with V10
+  filter(ConfigLeft == ConfigRight) %>%
+  mutate(Comparison=paste(AlgLeft,":",AlgRight,":",ConfigLeft, sep=""),
+         AlgComparison=paste(AlgLeft,":",AlgRight, sep="")) %>%
+  ## sort by p-value
+  arrange(adj.p.value) %>%
+  ## drop some columns to see p-value
+  select(-term,-conf.low,-conf.high) %>%
+  ## filter non-significant combinations
+  filter(adj.p.value <= 0.05)
+```
+
+We perform the test for each interaction, cleanup the resulting data frame by
+separating out the exact comparisons into new columns, and filter comparisons
+between version variants, e.g., comparing $V_{1}$ with $V_{2}$ is meaningless.
+Finally we sort by `adj.p.value`, just with a cursory glance are many
+significant comparisons. First we check the ANOVA assumptions, outliers, and
+residuals, to assess the validity of the results:
+
+```{r outliers}
+### Check leverage of the observations for outliers, this is in base R not ggplot2
+plot(res.fin.aov, 1)
+```
+
+We can see that we have three significant outliers: 1151, 10, and 755. If the
+dataset had homogeneous variance one would expect the fit (the redline)to remain
+horizontal, instead we observe the variance changing after ~0.6 on the x-axis.
+The homogeneity of variance can be formally checked with a `levene's test`:
+
+
+```{r levenes, message=FALSE}
+library(car)
+leveneTest(TimeCalc ~ Algorithm * Config, data=finSingData)
+```
+
+With a `p-value` of `< 0.05` from the `Levene's test` we have confirmed variance
+in this data set is non-homogenous. Next we'll check the normality assumption of
+the ANOVA, if we have a normal distribution between groups (e.g., Algorithms and
+Configs) then the residuals of the model will follow an approximate straight
+line in this plot. That is, we should observe a linear trend, any curving is
+indicative of a non-normal distribution:
+
+```{r normality}
+### Check the normality assumption of the ANOVA
+plot(res.fin.aov, 2)
+```
+
+Again, we observe curvation, suggesting non-normality at extreme quantiles. This
+could be indicative of performance hitting a resource limit of some kind,
+although more analysis would be required on the tool to directly assess the
+signal. Clearly the within group measurements are not normal distributed , this
+can formally check this with a Shapiro-Wilks test:
+
+```{r shap}
+shapiro.test(x = residuals(res.fin.aov))
+```
+
+We observe that the `p-value` _is significant_ which indicates a non-normal
+distribution. We leave the same analysis for `auto` up to the interested reader.
+For the analysis using the Kruskall-Wallis test please see the `sigTest`
+walkthrough.

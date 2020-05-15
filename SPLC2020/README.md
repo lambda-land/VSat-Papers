@@ -1,7 +1,7 @@
 ## Repository for Vsat submission to SPLC 2020
 
 
-### Layout
+### Repository Layout
 - data for plots in the paper are in `data` directory
 - Complete inference rules available in `rules.pdf` file
 - We provide several files in the spirit of [reproducible

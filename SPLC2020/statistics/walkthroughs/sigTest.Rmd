@@ -1,0 +1,70 @@
+---
+title: "Significance Testing of Rq3 Groups"
+author: "Jeffrey M. Young"
+date: "15 May 2020"
+output:
+  pdf_document:
+        latex_engine: xelatex
+theme: prettydoc
+---
+
+Hello, in this walkthrough we'll performing the significance testing on the
+financial and automotive datasets in light of the non-normality results from the
+`rq1_rq3` walk through. We are assuming you have read that walkthrough first.
+
+First, libraries, note that I have silenced the shadowing warnings from R:
+```{r message=FALSE}
+library(ggplot2) #plotting
+library(dplyr)   #dataframe manipulation
+library(tidyr)   #dataframe manipulation
+library(broom)   #for the tidy function
+library(scales)  #for scientific function
+```
+
+Let's load the data, we immediately pipe this with dplyr for convieniences like
+manipulating the arrow to look nice and making factors. I drop the Name column
+because it is large and separated to the other columns. We use the name `Config`
+to stand for version variants throughout the scripts.
+
+```{r, data}
+finRawFile <- "../../data/fin_rq3_singletons.csv"
+autoRawFile <- "../../data/auto_rq3_singletons.csv"
+
+finSingData <- read.csv(file=finRawFile) %>%
+  mutate(Algorithm = as.factor(Algorithm), Config = as.factor(Config)) %>%
+  mutate(Algorithm = gsub("-->", "\U27f6", Algorithm), data = "Financial") %>%
+  group_by(Algorithm, Config) %>%
+  mutate(TimeCalc = time -append(0,head(time, -1))) %>% filter(TimeCalc > 0)
+
+
+autoSingData <- read.csv(file=autoRawFile) %>%
+  mutate(Algorithm = as.factor(Algorithm), Config = as.factor(Config)) %>%
+  mutate(Algorithm = gsub("-->", "\U27f6", Algorithm), data = "Auto") %>%
+  group_by(Algorithm, Config) %>%
+  mutate(TimeCalc = time -append(0,head(time, -1))) %>% filter(TimeCalc > 0)
+```
+
+## RQ1: Performance as variant count increases
+In the last walkthrough we found that the data was not normally distributed, and
+variance was not homogenous about the sample groups. Thus, we cannot soundly
+perform a two-way ANOVA and trust the results. To overcome this we must use a
+`non-parametric` test for statistically significant comparison between groups.
+We choose to use a Kruskal-Wallis test, as this is commonly accepted as a
+`non-parametric` hypothesis test, unfortunately the Kruskal-Wallis test is only
+one-way. We begin with `financial` and then perform the test on `auto`. In the
+ANOVA analysis we were able to specify the model _with_ an interaction:
+`TimeCalc ~ Config * Algorithm`. For the Kruskal-Wallis this is not the case,
+rather we must reproduce the analysis manually.
+
+
+```{r fin.kw}
+## performing the test for Algorithm being significant
+kruskal.test(TimeCalc ~ Algorithm, finSingData)
+
+## and for versions
+kruskal.test(TimeCalc ~ Config, finSingData)
+
+## We must manually construct the interaction
+fin.inters <- interaction(finSingData$Algorithm, finSingData$Config)
+kruskal.test(TimeCalc ~ fin.inters, finSingData)
+```
