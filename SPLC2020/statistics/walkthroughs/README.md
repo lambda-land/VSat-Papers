@@ -1,9 +1,9 @@
 ## Walkthroughs for the analysis in R
 
 Please find each walkthrough `pdf` describing the analysis already compiled for
-your convienience. If you would like to setup the same development environment
-to tinker with the analysis scripts or data you'll need to construct a
-nix-shell. We have written the `nix` files for you, the workflow is:
+your convenience. If you would like to setup the same development environment to
+tinker with the analysis scripts or data you'll need to construct a `nix-shell`.
+We have written the `nix` files for you, the workflow is:
 
 ```
 $ nix-shell ../../nix/R.nix ## load the pinned R environment

@@ -8,9 +8,9 @@ output:
 theme: prettydoc
 ---
 
-Hello, in this walkthrough we'll performing the significance testing on the
+Hello, in this walk-through we'll performing the significance testing on the
 financial and automotive datasets in light of the non-normality results from the
-`rq1_rq3` walk through. We are assuming you have read that walkthrough first.
+`rq1_rq3` walk through. We are assuming you have read that walk-through first.
 
 First, libraries, note that I have silenced the shadowing warnings from R:
 ```{r message=FALSE}
@@ -21,7 +21,7 @@ library(broom)   #for the tidy function
 library(scales)  #for scientific function
 ```
 
-Let's load the data, we immediately pipe this with dplyr for convieniences like
+Let's load the data, we immediately pipe this with dplyr for conveniences like
 manipulating the arrow to look nice and making factors. I drop the Name column
 because it is large and separated to the other columns. We use the name `Config`
 to stand for version variants throughout the scripts.
@@ -44,9 +44,9 @@ autoSingData <- read.csv(file=autoRawFile) %>%
   mutate(TimeCalc = time -append(0,head(time, -1))) %>% filter(TimeCalc > 0)
 ```
 
-## RQ1: Performance as variant count increases
-In the last walkthrough we found that the data was not normally distributed, and
-variance was not homogenous about the sample groups. Thus, we cannot soundly
+## RQ3: Statistically meaningful overhead of the variational solver
+In the last walk-through we found that the data was not normally distributed, and
+variance was not homogeneous about the sample groups. Thus, we cannot soundly
 perform a two-way ANOVA and trust the results. To overcome this we must use a
 `non-parametric` test for statistically significant comparison between groups.
 We choose to use a Kruskal-Wallis test, as this is commonly accepted as a
@@ -56,15 +56,149 @@ ANOVA analysis we were able to specify the model _with_ an interaction:
 `TimeCalc ~ Config * Algorithm`. For the Kruskal-Wallis this is not the case,
 rather we must reproduce the analysis manually.
 
-
-```{r fin.kw}
+#### Financial
+```{r fin.kw.alg}
 ## performing the test for Algorithm being significant
 kruskal.test(TimeCalc ~ Algorithm, finSingData)
+```
 
+Algorithms statistically explain variance in the dataset, as expected.
+
+
+```{r fin.kw.v}
 ## and for versions
 kruskal.test(TimeCalc ~ Config, finSingData)
+```
 
+And so do versions, again as expected.
+
+
+```{r fin.kw.int}
 ## We must manually construct the interaction
 fin.inters <- interaction(finSingData$Algorithm, finSingData$Config)
 kruskal.test(TimeCalc ~ fin.inters, finSingData)
 ```
+
+Interactions are also meaningful. Significant pairs are found with a Wilcox
+test:
+
+```{r fin.pairs}
+## perform the test
+fin.pairs <- pairwise.wilcox.test(finSingData$TimeCalc, fin.inters,
+                                  ## choose a bonferroni p-value adjustment for familywise
+                                  ## error rate bonferroni is widely accepted, and very
+                                  ## conservative, alternatives exist but are left to
+                                  ## the interested
+                                  p.adj="bonf", exact=FALSE,
+                                  paired=FALSE) %>%
+  ## cleanup
+  tidy %>%
+  separate(group1, sep=c(3,4), into = c("AlgLeft", "Dump", "ConfigLeft")) %>%
+  separate(group2, sep=c(3,4), into = c("AlgRight", "Dump2", "ConfigRight")) %>%
+  select(-Dump, -Dump2) %>%
+  ## filter to version variants who were compared with themselves
+  filter(ConfigRight == ConfigLeft) %>%
+  ## add data column as `Financial` and sort by p-value
+  mutate(data = "Financial") %>%
+  arrange(p.value)
+
+## view the data frame
+fin.pairs
+```
+
+We see in the snippet of the `fin.pairs` data frame that all of the
+statistically significant comparisons involve `v-->v` (`vsat`), which confirm
+our observations from the rq3 violin plot in the `rq1_rq3.Rmd` walk-through. We
+now perform the same analysis on `auto`:
+
+#### Automotive
+
+```{r auto.kw.alg}
+## Algorithms are significant
+kruskal.test(TimeCalc ~ Algorithm, autoSingData)
+```
+
+Algorithms are significant, but just by a small margin as shown by the
+`p-value`'s proximity to 0.05. Thus, in a more constrictive hypothesis test they
+would be considered not significant for the `auto` dataset. This would imply
+that `v-->v` is _not_ statistically different from other algorithms for the
+`auto` dataset.
+
+```{r auto.kw.v}
+## Versions are significant as expected
+kruskal.test(TimeCalc ~ Config, autoSingData)
+```
+
+```{r auto.kw.int}
+## Interaction, also significant as expected
+auto.inters <- interaction(autoSingData$Algorithm, autoSingData$Config)
+kruskal.test(TimeCalc ~ auto.inters, autoSingData)
+```
+
+For convenience we synthesize the `adj.p.value`'s into a dataframe:
+
+```{r auto.pairs}
+## Auto pairs which are significant
+auto.pairs <- pairwise.wilcox.test(autoSingData$TimeCalc, auto.inters,
+                                   p.adj="bonf", method="holm"
+                                 , exact=TRUE, paired=FALSE) %>%
+  ## cleanup
+  tidy %>%
+              separate(group1, sep=c(3,4),
+                       into = c("AlgLeft", "Dump", "ConfigLeft")) %>%
+              separate(group2, sep=c(3,4),
+                       into = c("AlgRight", "Dump2", "ConfigRight")) %>%
+             select(-Dump, -Dump2) %>%
+             ## restricting comparisons to the same versino variant
+             filter(ConfigRight == ConfigLeft) %>%
+             ## add data column as `Auto`, then sort
+             mutate(data = "Auto") %>%
+             arrange(p.value)
+
+## observe the dataset
+auto.pairs
+```
+
+We see that only two comparisons (v-->v, p-->v), and (v-->p, p-->v) for $V_{1}$
+are meaningful in the `auto` dataset. This is good evidence the `v-->v` is not
+statistically worse for the `auto` dataset. The exact cause behind this result
+requires a more robust dataset, ideally, a dataset composed of several product
+lines which have a distribution of sharing ratios. Frankly, more data is needed
+to assess the signal. Finally, combine the datasets and synthesize a `p-value`
+matrix to visualize significant comparisons:
+
+```{r matrix, warning=FALSE, fig.width=8, fig.height=5}
+options(scipen = 999)
+rq3pvDF <- rbind(auto.pairs, fin.pairs) %>%
+  mutate(Significance = case_when(p.value <= 0.05 ~ "Significant",
+                                  TRUE ~ "Not Significant"),
+         SigColor = paste(AlgLeft,":",Significance,sep=""),
+         Version = factor(ConfigLeft, levels = c("V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10")))
+
+
+
+ggplot(rq3pvDF, aes(x=AlgLeft, y=AlgRight, size=(1-p.value),
+                                shape=SigColor, color=Significance)) +
+  geom_point() +
+  geom_jitter() +
+  theme_classic() +
+  facet_grid(data ~ Version, scales="free") +
+  scale_size_continuous(range=c(2,4)) +
+  scale_shape_manual(values = c(6,5,18,2,17)) +
+  guides(size=FALSE, shape=FALSE) +
+  ggtitle("RQ3: Statistical significance comparison matrix") +
+  ylab("Algorithm") +
+  theme(panel.grid.major.y = element_line(color = "lightgrey", linetype="dashed"),
+        axis.text.x = element_text(angle = 90, hjust = 1),
+        axis.title.x = element_blank(),
+        legend.position = "bottom")
+```
+
+This plot is faceted by `data`, and `Config` or each version. This means that it
+is a matrix of subplots, each subplot shows a dot comparing each algorithm on
+the x-axis to the algorithm on the y-axis. The points in the plot are filled in,
+_and sized_ by the magnitude of the `p-value`, the lower the `p-value`, the
+larger the point in the plot. Clearly shown is `v-->v` statistically different
+for financial, and similarly the differences previously reported for `auto`,
+$V_{1}$. The actual dataset may be observed with a call to `rq3pvDF` as have
+been done many times in these walk-throughs for the interested.
