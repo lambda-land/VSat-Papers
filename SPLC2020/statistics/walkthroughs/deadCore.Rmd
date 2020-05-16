@@ -1,0 +1,96 @@
+---
+title: "Dead and Core reproduction"
+author: "Jeffrey M. Young"
+date: "15 May 2020"
+output:
+  pdf_document:
+        latex_engine: xelatex
+theme: prettydoc
+---
+
+In this walk-through we'll perform the plot generation for the dead and core
+analysis. We assume you have read the other walk-throughs.
+
+### Preliminaries
+First, libraries, note that I have silenced the shadowing warnings from R:
+```{r message=FALSE}
+library(ggplot2)   #plotting
+library(dplyr)     #dataframe manipulation
+library(tidyr)     #dataframe manipulation
+library(broom)     #for the tidy function
+library(scales)    #for scientific function
+library(latex2exp) #for TeX in Labels
+library(ggpubr)    #for stat_cor
+```
+
+And now we'll load the data, and perform some simple munging to select relevant
+columns.
+
+```{r data}
+## Load files
+finResultsFile <- "../../data/fin_dead_core.csv"
+autoResultsFile <- "../../data/auto_dead_core.csv"
+
+## The usual manipulations
+finData <- read.csv(file=finResultsFile) %>%
+        mutate(Algorithm = as.factor(Algorithm), Config = as.factor(Config)) %>%
+        mutate(Algorithm = gsub("-->", "\U27f6", Algorithm))
+
+autoData <- read.csv(file=autoResultsFile) %>%
+         mutate(Algorithm = as.factor(Algorithm), Config = as.factor(Config)) %>%
+         mutate(Algorithm = gsub("-->", "\U27f6", Algorithm))
+
+## combine the data frames
+finDF <- finData %>% mutate(data = "Fin")
+autoDF <- autoData %>% mutate(data = "Auto")
+
+data <- rbind(finDF, autoDF) %>%
+  select(Mean, Algorithm, data, ChcCount, PlainCount, Config)
+```
+
+Now let's look at the dataset
+
+```{r peek}
+str(data)
+
+data
+```
+
+We can already see enough to reproduce the table in the paper, but some
+formatting would be nicer:
+
+```{r formatting}
+deadCoreDF <- data %>%
+  # perform the following actions for each dataset
+  group_by(data) %>%
+  # sort by mean
+  arrange(Mean) %>%
+  ## change the significant figures by dataset
+  mutate(MeanLbl = case_when(data == "Auto" ~ signif(Mean, 5),
+                             data == "Fin" ~ signif(Mean, 3)))
+
+deadCoreDF
+```
+
+and a simple bar plot to show the data:
+
+```{r deadCore, fig.width=7, fig.height=4, warning=FALSE}
+ggplot(deadCoreDF , mapping = aes(x=Algorithm , y=Mean , color = Algorithm)) +
+  theme_classic() +
+  ## remove the legends for fill, size, color
+  guides(fill = FALSE) +
+  guides(size = FALSE) +
+  guides(color = FALSE) +
+  ## make the plot a bar plot
+  geom_bar(stat="identity", fill="white", width=0.5
+           ,size=1.15) +
+  ## add the text labels to show exact values
+  geom_text(aes(label=MeanLbl, hjust=1.4), color="black") +
+  ## construct the plot for both data sets
+  facet_wrap(. ~ data, scales = "free_x") +
+  ## other niceties
+  labs(title = "Dead Core Demonstration",
+       y = "Time [s] to solve Dead and Core Analysis over all Versions") +
+  theme(legend.position = "none") +
+  coord_flip()
+```
