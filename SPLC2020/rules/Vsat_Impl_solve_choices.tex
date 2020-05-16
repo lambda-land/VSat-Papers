@@ -1,0 +1,183 @@
+% \begin{tabbing}
+%   % \begin{align*}
+%   {\sc CoreChoices}$\ :\ C \rightarrow vm \rightarrow ev \rightarrow vm$ \\
+%   {\sc CoreChoices}$\ C\ mdls\ v$\\
+%   \qquad case $v$ of \\
+%   \qquad \qquad \= Unit \qquad \qquad \= = return \mdls{} \\
+%   \> \chc[d]{e,e'} \> = CoreChoicesHelper C \dimd{} \mdls{} (Evaluate e) (Evaluate e') \\
+%   \> \chc[d]{e,e'} $\wedge\ ev\ $ \> = do \\
+%   \> \> \quad \=  $vE \leftarrow$ Evaluate $e$ \\
+%   \> \> \> $vE' \leftarrow$ Evaluate $e'$ \\
+%   \> \> \> CoreChoicesHelper C \dimd{} \mdls{} ($vE \wedge\ ev$) ($vE' \wedge ev$) \\
+%   \> $ev\ \wedge\ $\chc[d]{e,e'} \> = do \\
+%   \> \> \quad \=  $vE \leftarrow$ Evaluate $e$ \\
+%   \> \> \> $vE' \leftarrow$ Evaluate $e'$ \\
+%   \> \> \> CoreChoicesHelper C \dimd{} \mdls{} ($ev \wedge\ vE$) ($ev \wedge eV'$) \\
+%   \> \chc[d]{e,e'} $\vee\ ev\ $ \> = do \\
+%   \> \> \quad \=  $vE \leftarrow$ Evaluate $e$ \\
+%   \> \> \> $vE' \leftarrow$ Evaluate $e'$ \\
+%   \> \> \> CoreChoicesHelper C \dimd{} \mdls{} ($vE \vee\ ev$) ($vE' \vee ev$) \\
+%   \> $ev\ \vee\ $\chc[d]{e,e'} \> = do \\
+%   \> \> \quad \=  $vE \leftarrow$ Evaluate $e$ \\
+%   \> \> \> $vE' \leftarrow$ Evaluate $e'$ \\
+%   \> \> \> CoreChoicesHelper C \dimd{} \mdls{} ($ev \vee\ vE$) ($ev \vee eV'$) \\
+%   \> $ev$ \> = do \\
+%   \> \> \quad \= $vE \leftarrow$ FindPChoice (Evaluate $ev$) \\
+%   \> \> \> solveChoices C \dimd{} \mdls{} ($vE$)  \\
+% \end{tabbing}
+\begin{mathpar}
+  %%% Computation rules
+  \inferrule*[Right=Gen-M]
+  { \texttt{genModel($\Phi$)} = m }
+  { (\Phi, \unit{}) \Downarrow_{i} m }
+
+  \inferrule*[Right=Cr-Sym]
+  { ((\Gamma, \Delta), s) \rightarrowtail ((\Gamma', \Delta'), \unit{})}
+  { ((C, \Gamma, \Delta), s) \Downarrow_{i} ((C, \Gamma', \Delta'), \unit{})
+  }
+\end{mathpar}
+%
+\begin{mathpar}
+\inferrule*[Right=Cr-And]
+{ (\Phi, v_{1}) \Downarrow_{i} (\Phi_{1}, v_{1}') \\
+    (\Phi_1, v_{2}) \Downarrow_{1} (\Phi', v_{2}') \\
+  }
+  { (\Phi, v_{1} \wedge v_{2}) \Downarrow_{i} (\Phi', v_{1}' \wedge v_{2}')
+  }
+\\%
+%   \hspace{0.5cm}
+  %% solve a symbolic reference execute
+  \inferrule*[Right=Cr-Or]
+  { (\Delta, v_{1} \vee v_{2}) \mapsto (\Delta', v)}
+  { ((C, \Gamma, \Delta), v_{1} \vee v_{2}) \Downarrow_{i} ((C, \Gamma, \Delta'), v) }
+
+\\%
+%%%%%%% And rules %%%%%%%%%%%%%%%%%%%%%
+\inferrule*[Right=Cr-And-TR]
+{
+  C(D) = \true \\
+  ((C, \Gamma, \Delta), v \wedge \texttt{toIR$(e_{1})$}) \Downarrow_{i} m
+}
+{
+  ((C, \Gamma, \Delta), v \wedge \chc[D]{e_{1}, e_{2}}) \Downarrow_{i} m
+}
+\\
+\inferrule*[Right=Cr-And-TL]
+{
+  C(D) = \true \\
+  ((C, \Gamma, \Delta), \texttt{toIR$(e_{1})$} \wedge v) \Downarrow_{i} m
+}
+{
+  ((C, \Gamma, \Delta), \chc[D]{e_{1}, e_{2}} \wedge v) \Downarrow_{i} m
+}
+
+\\%
+\inferrule*[Right=Cr-And-FR]
+{
+  C(D) = \false \\
+  ((C, \Gamma, \Delta), v \wedge \texttt{toIR$(e_{2})$}) \Downarrow_{i} m
+}
+{
+  ((C, \Gamma, \Delta), v \wedge \chc[D]{e_{1}, e_{2}}) \Downarrow_{i} m
+}
+\\
+\inferrule*[Right=Cr-And-FL]
+{
+  C(D) = \false \\
+  ((C, \Gamma, \Delta), \texttt{toIR$(e_{2})$} \wedge v) \Downarrow_{i} m
+}
+{
+  ((C, \Gamma, \Delta), \chc[D]{e_{1}, e_{2}} \wedge v) \Downarrow_{i} m
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%% Or rules %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\inferrule*[Right=Cr-Or-TR]
+{
+  C(D) = \true \\
+  ((C, \Gamma, \Delta), v \vee \texttt{toIR$(e_{1})$}) \Downarrow_{i} m
+}
+{
+  ((C, \Gamma, \Delta), v \vee \chc[D]{e_{1}, e_{2}}) \Downarrow_{i} m
+}
+\\
+\inferrule*[Right=Cr-Or-TL]
+{
+  C(D) = \true \\
+  ((C, \Gamma, \Delta), \texttt{toIR$(e_{1})$} \vee v) \Downarrow_{i} m
+}
+{
+  ((C, \Gamma, \Delta), \chc[D]{e_{1}, e_{2}} \vee v) \Downarrow_{i} m
+}
+
+\\%
+\inferrule*[Right=Cr-Or-FR]
+{
+  C(D) = \false \\
+  ((C, \Gamma, \Delta), v \vee \texttt{toIR$(e_{2})$}) \Downarrow_{i} m
+}
+{
+  ((C, \Gamma, \Delta), v \vee \chc[D]{e_{1}, e_{2}}) \Downarrow_{i} m
+}
+\\
+\inferrule*[Right=Cr-Or-FL]
+{
+  C(D) = \false \\
+  ((C, \Gamma, \Delta), \texttt{toIR$(e_{2})$} \vee v) \Downarrow_{i} m
+}
+{
+  ((C, \Gamma, \Delta), \chc[D]{e_{1}, e_{2}} \vee v) \Downarrow_{i} m
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Choice rules %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \inferrule*[Right=Cr-CAnd-R]
+  {
+    \hspace{1.3cm}
+    ((C \cup \{(D, \true)\}, \Gamma, \Delta), v \wedge \chc[D]{e_{1}, e_{2}}) \Downarrow_{i+1} m_{1} \\
+    D \notin C \\
+    ((C \cup \{(D, \false)\}, \Gamma, \Delta), v \wedge \chc[D]{e_{1}, e_{2}}) \Downarrow_{i+1} m_{2} \\
+  }
+  {
+    ((C, \Gamma, \Delta), v \wedge \chc[D]{e_{1}, e_{2}}) \Downarrow_{i} m_{1}
+    \oplus m_{2}
+  }
+  \\
+  \inferrule*[Right=Cr-COr-R]
+  {
+    \hspace{1.3cm}
+    ((C \cup \{(D, \true)\}, \Gamma, \Delta), v \vee \chc[D]{e_{1}, e_{2}}) \Downarrow_{i+1} m_{1} \\
+    D \notin C \\
+    ((C \cup \{(D, \false)\}, \Gamma, \Delta), v \vee \chc[D]{e_{1}, e_{2}}) \Downarrow_{i+1} m_{2} \\
+  }
+  {
+    ((C, \Gamma, \Delta), v \vee \chc[D]{e_{1}, e_{2}}) \Downarrow_{i} m_{1}
+    \oplus m_{2}
+  }
+  \\
+
+  \inferrule*[Right=Cr-CAnd-L]
+  {
+    \hspace{1.3cm}
+    ((C \cup \{(D, \true)\}, \Gamma, \Delta), \chc[D]{e_{1}, e_{2}} \wedge v) \Downarrow_{i+1} m_{1} \\
+    D \notin C \\
+    ((C \cup \{(D, \false)\}, \Gamma, \Delta), \chc[D]{e_{1}, e_{2}} \wedge v) \Downarrow_{i+1} m_{2} \\
+  }
+  {
+    ((C, \Gamma, \Delta), \chc[D]{e_{1}, e_{2}} \wedge v) \Downarrow_{i} m_{1}
+    \oplus m_{2}
+  }
+  \\
+  \inferrule*[Right=Cr-COr-L]
+  {
+    \hspace{1.3cm}
+    ((C \cup \{(D, \true)\}, \Gamma, \Delta), \chc[D]{e_{1}, e_{2}} \vee v) \Downarrow_{i+1} m_{1} \\
+    D \notin C \\
+    ((C \cup \{(D, \false)\}, \Gamma, \Delta), \chc[D]{e_{1}, e_{2}} \vee v) \Downarrow_{i+1} m_{2} \\
+  }
+  {
+    ((C, \Gamma, \Delta), \chc[D]{e_{1}, e_{2}} \vee v) \Downarrow_{i} m_{1}
+    \oplus m_{2}
+  }
+%
+\end{mathpar}

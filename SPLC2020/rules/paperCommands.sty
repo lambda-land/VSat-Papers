@@ -1,0 +1,73 @@
+\NeedsTeXFormat{LaTeX2e}
+
+%
+% Macros defined just for this paper
+%
+\ProvidesPackage{paperCommands}
+
+\RequirePackage{xcolor} \RequirePackage{xargs} %\RequirePackage{cc}
+\RequirePackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+
+%% Todos
+\newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+\newcommandx{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
+\newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+\newcommandx{\addcitation}[2][1=]{\todo[linecolor=olive,backgroundcolor=olive!25,bordercolor=olive,#1]{#2}}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%%%%%% Convenient commands for the paper
+\newcommand{\sat}{SAT}
+\newcommand{\vsat}{VSAT}
+\newcommand{\vpl}{VPL}
+\newcommand{\pl}{C\textsubscript{2}}
+\newcommand{\linux}{Linux}
+\newcommand{\kernfix}[1]{\mathit{#1}}
+% \newcommand{\fmf}{FMF}
+\newcommand{\hquad}{\hspace{0.5em}}
+
+%%%%%% Running Example macros
+\newcommand{\prodCC}[0]{\ensuremath{\kernfix{Prod}}}
+\newcommand{\devCC}[0]{\ensuremath{\kernfix{Dev}}}
+\newcommand{\stgCC}[0]{\ensuremath{\kernfix{Stg}}}
+
+%%%%%% Choice calculus convieniences
+\newcommand{\bdim}[0]{\CCkeyw{d}}
+\newcommand{\bDim}[0]{\CCkeyw{D}}
+\newcommand{\conf}[0]{\texttt{C}}
+
+%%%%%% saving keystrokes for equivalency laws
+\newcommand{\e}[1]{\ensuremath{e_{#1}}}
+
+%%%%% Bools returned from a config lookup
+\newcommand{\true}[0]{\textit{true}}
+\newcommand{\false}[0]{\textit{false}}
+
+%%%%% Evaluation Macros
+\newcommand{\semAccum}[1]{\sem[A]{#1}}
+\newcommand{\semEval}[1]{\sem[E]{#1}}
+
+%%%%% convieniences for Experimental Methodology and Evaluation
+\newcommand{\nieke}{\text{Nieke et al.}}
+\newcommand{\autoData}{\textit{auto}}
+\newcommand{\financial}{\textit{fin}}
+
+%%% Research questions to be answered
+\newcommand{\resQ}[1]{\textbf{RQ#1}}
+
+%%% macro for all combinations of two features
+\newcommand{\ViByVj}[2]{$\mathit{V_{#1}*V_{#2}}$}
+\newcommand{\ViToVj}[2]{$\mathit{V_{#1}**V_{#2}}$}
+
+%%% Arrows
+\newcommand{\iToj}[2]{$\textit{#1}{\rightarrow}\textit{#2}$}
+\newcommand{\pTop}[0]{\iToj{p}{p}}
+\newcommand{\pTov}[0]{\iToj{p}{v}}
+\newcommand{\vTop}[0]{\iToj{v}{p}}
+\newcommand{\vTov}[0]{\iToj{v}{v}}
+
+%%% Application domain
+\newcommand{\ap}[1]{\{#1\}}
+\newcommand{\github}[0]{\url{https://github.com/lambda-land/VSat-Papers/tree/master/SPLC2020}}

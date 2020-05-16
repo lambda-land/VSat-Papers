@@ -1,0 +1,845 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/NixOS.org) (preloaded format=pdflatex 2020.4.30)  16 MAY 2020 11:58
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**Vsat_Impl_evaluation_rules.tex
+(./Vsat_Impl_evaluation_rules.tex
+LaTeX2e <2020-02-02> patch level 5
+L3 programming layer <2020-02-25>
+
+./Vsat_Impl_evaluation_rules.tex:1: LaTeX Error: Environment mathpar undefined.
+
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1 \begin{mathpar}
+                   
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+./Vsat_Impl_evaluation_rules.tex:3: Undefined control sequence.
+l.3   \inferrule
+                *[Right=Ev-Term]
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+./Vsat_Impl_evaluation_rules.tex:3: LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3   \inferrule*
+                 [Right=Ev-Term]
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no * in font nullfont!
+Missing character: There is no [ in font nullfont!
+Missing character: There is no R in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no E in font nullfont!
+Missing character: There is no v in font nullfont!
+Missing character: There is no - in font nullfont!
+Missing character: There is no T in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no ] in font nullfont!
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 4.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 4.
+Missing character: There is no = in font nullfont!
+./Vsat_Impl_evaluation_rules.tex:4: Missing $ inserted.
+<inserted text> 
+                $
+l.4 ...ttt{assert($(\Gamma, \Delta), t$)} = \Gamma
+                                                  ' }
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+./Vsat_Impl_evaluation_rules.tex:4: Extra }, or forgotten $.
+l.4 ...{assert($(\Gamma, \Delta), t$)} = \Gamma' }
+                                                  
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+./Vsat_Impl_evaluation_rules.tex:5: Undefined control sequence.
+l.5   {((\Gamma, \Delta), t) \rightarrowtail
+                                             ((\Gamma', \Delta), \unit{}) }
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:5: Undefined control sequence.
+l.5 ...) \rightarrowtail ((\Gamma', \Delta), \unit
+                                                  {}) }
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:7: Undefined control sequence.
+<recently read> \inferrule 
+                           
+l.7   \inferrule
+                *[Right=Ev-Sym]
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:9: Undefined control sequence.
+l.9   { ((\Gamma, \Delta), s) \rightarrowtail
+                                              ((\Gamma', \Delta), \unit{}) }
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:9: Undefined control sequence.
+l.9 ...) \rightarrowtail ((\Gamma', \Delta), \unit
+                                                  {}) }
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:11: Undefined control sequence.
+<recently read> \inferrule 
+                           
+l.11   \inferrule
+                 *[Right=Ev-Chc]
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:13: Undefined control sequence.
+l.13   {(\Theta, \chc
+                     [D]{e_{1}, e_{2}}) \rightarrowtail (\Theta, \chc[D]{e_{...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:13: Undefined control sequence.
+l.13 ...ta, \chc[D]{e_{1}, e_{2}}) \rightarrowtail
+                                                   (\Theta, \chc[D]{e_{1}, e...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:13: Undefined control sequence.
+l.13 ...{1}, e_{2}}) \rightarrowtail (\Theta, \chc
+                                                  [D]{e_{1}, e_{2}})}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:21: Undefined control sequence.
+<recently read> \inferrule 
+                           
+l.21   \inferrule
+                 *[Right=Ev-UL]
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:23: Undefined control sequence.
+l.23   { (\Theta,\unit
+                      {} \wedge v) \rightarrowtail (\Theta, v) }
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:23: Undefined control sequence.
+l.23   { (\Theta,\unit{} \wedge v) \rightarrowtail
+                                                   (\Theta, v) }
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:24: Missing $ inserted.
+<inserted text> 
+                $
+l.24 
+     
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 3--24
+[]
+ []
+
+
+Overfull \hbox (76.86075pt too wide) in paragraph at lines 3--24
+\OT1/cmtt/m/n/10 assert($\OT1/cmr/m/n/10 (^^@\OML/cmm/m/it/10 ; \OT1/cmr/m/n/10
+ ^^A)\OML/cmm/m/it/10 ; t$\OT1/cmtt/m/n/10 )
+ []
+
+
+Overfull \hbox (93.52785pt too wide) in paragraph at lines 3--24
+\OT1/cmr/m/n/10 ^^@[][][] 
+ []
+
+
+Overfull \hbox (5.00002pt too wide) in paragraph at lines 3--24
+\OMS/cmsy/m/n/10 ^^C
+ []
+
+
+Overfull \hbox (38.94974pt too wide) in paragraph at lines 3--24
+\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 Right \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (20.94212pt too wide) in paragraph at lines 3--24
+\OML/cmm/m/it/10 Ev \OMS/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (209.40242pt too wide) in paragraph at lines 3--24
+\OML/cmm/m/it/10 Sym\OT1/cmr/m/n/10 ][][][] 
+ []
+
+
+Overfull \hbox (5.00002pt too wide) in paragraph at lines 3--24
+\OMS/cmsy/m/n/10 ^^C
+ []
+
+
+Overfull \hbox (38.94974pt too wide) in paragraph at lines 3--24
+\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 Right \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (20.94212pt too wide) in paragraph at lines 3--24
+\OML/cmm/m/it/10 Ev \OMS/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (134.41289pt too wide) in paragraph at lines 3--24
+\OML/cmm/m/it/10 Chc\OT1/cmr/m/n/10 ][][][] 
+ []
+
+
+Overfull \hbox (5.00002pt too wide) in paragraph at lines 3--24
+\OMS/cmsy/m/n/10 ^^C
+ []
+
+
+Overfull \hbox (38.94974pt too wide) in paragraph at lines 3--24
+\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 Right \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (20.94212pt too wide) in paragraph at lines 3--24
+\OML/cmm/m/it/10 Ev \OMS/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (79.02446pt too wide) in paragraph at lines 3--24
+\OML/cmm/m/it/10 UL\OT1/cmr/m/n/10 ][][]$ 
+ []
+
+./Vsat_Impl_evaluation_rules.tex:25: Undefined control sequence.
+l.25   \inferrule
+                 *[Right=Ev-UR]
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+./Vsat_Impl_evaluation_rules.tex:25: LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.25   \inferrule*
+                  [Right=Ev-UR]
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no * in font nullfont!
+Missing character: There is no [ in font nullfont!
+Missing character: There is no R in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no E in font nullfont!
+Missing character: There is no v in font nullfont!
+Missing character: There is no - in font nullfont!
+Missing character: There is no U in font nullfont!
+Missing character: There is no R in font nullfont!
+Missing character: There is no ] in font nullfont!
+Missing character: There is no ( in font nullfont!
+./Vsat_Impl_evaluation_rules.tex:27: Missing $ inserted.
+<inserted text> 
+                $
+l.27   { (\Theta
+                , v \wedge\unit{}) \rightarrowtail (\Theta, v)}
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+./Vsat_Impl_evaluation_rules.tex:27: Undefined control sequence.
+l.27   { (\Theta, v \wedge\unit
+                               {}) \rightarrowtail (\Theta, v)}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:27: Undefined control sequence.
+l.27   { (\Theta, v \wedge\unit{}) \rightarrowtail
+                                                   (\Theta, v)}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:27: Extra }, or forgotten $.
+l.27 ...wedge\unit{}) \rightarrowtail (\Theta, v)}
+                                                  
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+./Vsat_Impl_evaluation_rules.tex:28: Missing $ inserted.
+<inserted text> 
+                $
+l.28 
+     
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 25--28
+[]
+ []
+
+
+Overfull \hbox (24.09491pt too wide) in paragraph at lines 25--28
+\OT1/cmr/m/n/10 ^^B\OML/cmm/m/it/10 ; v \OMS/cmsy/m/n/10 ^
+ []
+
+
+Overfull \hbox (29.09492pt too wide) in paragraph at lines 25--28
+[]\OT1/cmr/m/n/10 )(^^B\OML/cmm/m/it/10 ; v\OT1/cmr/m/n/10 )$ 
+ []
+
+
+./Vsat_Impl_evaluation_rules.tex:30: LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.30 
+     
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+./Vsat_Impl_evaluation_rules.tex:31: Undefined control sequence.
+l.31   \inferrule
+                 *[Right=Ev-DM-VOr]
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+./Vsat_Impl_evaluation_rules.tex:31: LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.31   \inferrule*
+                  [Right=Ev-DM-VOr]
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no * in font nullfont!
+Missing character: There is no [ in font nullfont!
+Missing character: There is no R in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no E in font nullfont!
+Missing character: There is no v in font nullfont!
+Missing character: There is no - in font nullfont!
+Missing character: There is no D in font nullfont!
+Missing character: There is no M in font nullfont!
+Missing character: There is no - in font nullfont!
+Missing character: There is no V in font nullfont!
+Missing character: There is no O in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no ] in font nullfont!
+Missing character: There is no ( in font nullfont!
+./Vsat_Impl_evaluation_rules.tex:33: Missing $ inserted.
+<inserted text> 
+                $
+l.33   { (\Theta
+                , \neg (v_{1} \vee v_{2})) \rightarrowtail (\Theta ,\neg v_{...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+./Vsat_Impl_evaluation_rules.tex:33: Undefined control sequence.
+l.33 ..., \neg (v_{1} \vee v_{2})) \rightarrowtail
+                                                   (\Theta ,\neg v_{1} \wedg...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:33: Extra }, or forgotten $.
+l.33 ...il (\Theta ,\neg v_{1} \wedge \neg v_{2})}
+                                                  
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+./Vsat_Impl_evaluation_rules.tex:35: Undefined control sequence.
+<recently read> \inferrule 
+                           
+l.35   \inferrule
+                 *[Right=Ev-DM-VAnd]
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:37: Undefined control sequence.
+l.37 ...\neg (v_{1} \wedge v_{2})) \rightarrowtail
+                                                   (\Theta, \neg v_{1} \vee ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:38: Missing $ inserted.
+<inserted text> 
+                $
+l.38 
+     
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 31--38
+[]
+ []
+
+
+Overfull \hbox (38.77785pt too wide) in paragraph at lines 31--38
+\OT1/cmr/m/n/10 ^^B\OML/cmm/m/it/10 ; \OMS/cmsy/m/n/10 :\OT1/cmr/m/n/10 (\OML/c
+mm/m/it/10 v[] \OMS/cmsy/m/n/10 _
+ []
+
+
+Overfull \hbox (55.889pt too wide) in paragraph at lines 31--38
+\OML/cmm/m/it/10 v[]\OT1/cmr/m/n/10 ))(^^B\OML/cmm/m/it/10 ; \OMS/cmsy/m/n/10 :
+\OML/cmm/m/it/10 v[] \OMS/cmsy/m/n/10 ^
+ []
+
+
+Overfull \hbox (19.88895pt too wide) in paragraph at lines 31--38
+\OMS/cmsy/m/n/10 :\OML/cmm/m/it/10 v[]\OT1/cmr/m/n/10 )[] 
+ []
+
+
+Overfull \hbox (5.00002pt too wide) in paragraph at lines 31--38
+\OMS/cmsy/m/n/10 ^^C
+ []
+
+
+Overfull \hbox (38.94974pt too wide) in paragraph at lines 31--38
+\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 Right \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (20.94212pt too wide) in paragraph at lines 31--38
+\OML/cmm/m/it/10 Ev \OMS/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (27.1264pt too wide) in paragraph at lines 31--38
+\OML/cmm/m/it/10 DM \OMS/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (156.87395pt too wide) in paragraph at lines 31--38
+\OML/cmm/m/it/10 VAnd\OT1/cmr/m/n/10 ][][]$ 
+ []
+
+
+./Vsat_Impl_evaluation_rules.tex:49: LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.49 
+     
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+./Vsat_Impl_evaluation_rules.tex:50: Undefined control sequence.
+l.50   \inferrule
+                 *[Right=Ev-Neg]
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+./Vsat_Impl_evaluation_rules.tex:50: LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.50   \inferrule*
+                  [Right=Ev-Neg]
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no * in font nullfont!
+Missing character: There is no [ in font nullfont!
+Missing character: There is no R in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no E in font nullfont!
+Missing character: There is no v in font nullfont!
+Missing character: There is no - in font nullfont!
+Missing character: There is no N in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no ] in font nullfont!
+Missing character: There is no ( in font nullfont!
+./Vsat_Impl_evaluation_rules.tex:51: Missing $ inserted.
+<inserted text> 
+                $
+l.51   { (\Delta
+                ,\neg v) \mapsto (\Delta', v')
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+./Vsat_Impl_evaluation_rules.tex:53: Extra }, or forgotten $.
+l.53   }
+        
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+./Vsat_Impl_evaluation_rules.tex:54: Undefined control sequence.
+l.54 ...((\Gamma, \Delta), \neg v) \rightarrowtail
+                                                   ((\Gamma, \Delta'), v') }
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:98: Undefined control sequence.
+<recently read> \inferrule 
+                           
+l.98   \inferrule
+                 *[Right=Ev-Or]
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:101: Undefined control sequence.
+l.101 ...Delta), v_{1} \vee v_{2}) \rightarrowtail
+                                                   ((\Gamma, \Delta'), v_{1}...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:102: Missing $ inserted.
+<inserted text> 
+                $
+l.102 
+      
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 50--102
+[]
+ []
+
+
+Overfull \hbox (41.3171pt too wide) in paragraph at lines 50--102
+\OT1/cmr/m/n/10 ^^A\OML/cmm/m/it/10 ; \OMS/cmsy/m/n/10 :\OML/cmm/m/it/10 v\OT1/
+cmr/m/n/10 ) \OMS/cmsy/m/n/10 7!
+ []
+
+
+Overfull \hbox (132.11812pt too wide) in paragraph at lines 50--102
+\OT1/cmr/m/n/10 (^^A[]\OML/cmm/m/it/10 ; v[]\OT1/cmr/m/n/10 )[][] 
+ []
+
+
+Overfull \hbox (5.00002pt too wide) in paragraph at lines 50--102
+\OMS/cmsy/m/n/10 ^^C
+ []
+
+
+Overfull \hbox (38.94974pt too wide) in paragraph at lines 50--102
+\OT1/cmr/m/n/10 [\OML/cmm/m/it/10 Right \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (20.94212pt too wide) in paragraph at lines 50--102
+\OML/cmm/m/it/10 Ev \OMS/cmsy/m/n/10 ^^@
+ []
+
+
+Overfull \hbox (318.33376pt too wide) in paragraph at lines 50--102
+\OML/cmm/m/it/10 Or\OT1/cmr/m/n/10 ][][]$ 
+ []
+
+./Vsat_Impl_evaluation_rules.tex:103: Undefined control sequence.
+l.103   \inferrule
+                  *[Right=Ev-And]
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+./Vsat_Impl_evaluation_rules.tex:103: LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.103   \inferrule*
+                   [Right=Ev-And]
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no * in font nullfont!
+Missing character: There is no [ in font nullfont!
+Missing character: There is no R in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no E in font nullfont!
+Missing character: There is no v in font nullfont!
+Missing character: There is no - in font nullfont!
+Missing character: There is no A in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no ] in font nullfont!
+Missing character: There is no ( in font nullfont!
+./Vsat_Impl_evaluation_rules.tex:104: Missing $ inserted.
+<inserted text> 
+                $
+l.104   {(\Theta
+                , v_{1}) \rightarrowtail (\Theta_{1}, v_{1}') \\
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+./Vsat_Impl_evaluation_rules.tex:104: Undefined control sequence.
+l.104   {(\Theta, v_{1}) \rightarrowtail
+                                         (\Theta_{1}, v_{1}') \\
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:105: Undefined control sequence.
+l.105     (\Theta_{1}, v_{2}) \rightarrowtail
+                                              (\Theta', v_{2}')
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Vsat_Impl_evaluation_rules.tex:106: Extra }, or forgotten $.
+l.106   }
+         
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+./Vsat_Impl_evaluation_rules.tex:107: Undefined control sequence.
+l.107 ...heta, v_{1} \wedge v_{2}) \rightarrowtail
+                                                   (\Theta', v_{1}' \wedge v...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+./Vsat_Impl_evaluation_rules.tex:109: LaTeX Error: \begin{document} ended by \e
+nd{mathpar}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.109 \end{mathpar}
+                   %
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+./Vsat_Impl_evaluation_rules.tex:109: Missing $ inserted.
+<inserted text> 
+                $
+l.109 \end{mathpar}
+                   %
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+./Vsat_Impl_evaluation_rules.tex:109: Missing } inserted.
+<inserted text> 
+                }
+l.109 \end{mathpar}
+                   %
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+./Vsat_Impl_evaluation_rules.tex:109: Missing } inserted.
+<inserted text> 
+                }
+l.109 \end{mathpar}
+                   %
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+./Vsat_Impl_evaluation_rules.tex:109: Missing } inserted.
+<inserted text> 
+                }
+l.109 \end{mathpar}
+                   %
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+./Vsat_Impl_evaluation_rules.tex:109: Missing } inserted.
+<inserted text> 
+                }
+l.109 \end{mathpar}
+                   %
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+./Vsat_Impl_evaluation_rules.tex:109: Missing } inserted.
+<inserted text> 
+                }
+l.109 \end{mathpar}
+                   %
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+)
+! Emergency stop.
+<*> Vsat_Impl_evaluation_rules.tex
+                                  
+*** (job aborted, no legal \end found)
+
+ 
+Here is how much of TeX's memory you used:
+ 24 strings out of 480994
+ 549 string characters out of 5888645
+ 239785 words of memory out of 5000000
+ 15636 multiletter control sequences out of 15000+600000
+ 532506 words of font info for 25 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 20i,5n,15p,134b,115s stack positions out of 5000i,500n,10000p,200000b,80000s
+!  ==> Fatal error occurred, no output PDF file produced!
