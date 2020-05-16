@@ -94,3 +94,17 @@ ggplot(deadCoreDF , mapping = aes(x=Algorithm , y=Mean , color = Algorithm)) +
   theme(legend.position = "none") +
   coord_flip()
 ```
+
+Finally we calculate the speedup/slowdown using `dplyr`
+
+```{r speedup}
+deadCoreDF %>%
+  ## reduce the data frame to relevant columns
+  select(data,Algorithm,Mean) %>%
+  ## perform the following verbs for each dataset
+  group_by(data) %>%
+  ## turn long data, wide, i.e., make algorithm labels their own columns with values being Mean
+  spread(Algorithm, Mean) %>%
+  ## calculuate the speedup ratio with respect to v-->p
+  mutate(speedup = `v⟶p` / `v⟶v`)
+```
