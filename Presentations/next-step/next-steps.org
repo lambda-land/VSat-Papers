@@ -1,4 +1,4 @@
-#+TITLE:     Writing Beamer presentations in org-mode
+#+TITLE:     VSAT: What is Next
 #+AUTHOR:    Jeffrey Young
 #+EMAIL:     youngjef@oregonstate.edu
 #+DATE:      2020-05-31
@@ -71,13 +71,23 @@
 
 ** Improve Performance
 
-*** Methods
-**** Migrate from sbv
-**** Improve sbv
+*** Migrate away from sbv
 
-*** Benefits
+**** How
+     Implement a type system instead of using symbolic execution engine
 
-**** More possible application areas
+**** Impact
+     - Simpler more general implementation
+     - Allow others to more easily implement a variational solver
+
+
+*** Improve sbv itself
+
+**** How (already in progress)
+     - Implement a benchmark library for sbv (Done)
+     - Identify and reduce hot spots
+     - The VSAT project has already contributed 4 PRs to sbv itself
+
 
 *** Costs
 
@@ -85,7 +95,11 @@
 
 ** Extend Applications
 
-*** Methods
+*** How
+
+**** Reuse paper survery from Jeff's Qualifier exam
+
+**** Thomas' ideas + Feedback from SPLC community
 
 *** Benefits
 
@@ -97,9 +111,13 @@
 
 **** Increases impact of any future papers
 
+**** Work is focused on paper's rather than engineering or science
+
 *** Costs
 
 **** Opportunity cost with respect to other directions
+
+**** Could artificially restrict contribution
 
 ** Abstract the Algorithm
 
@@ -115,3 +133,9 @@
 *** Costs
 
 **** Opportunity cost with respect to other directions
+
+* Technical Debt
+
+** Tool needs a lot of cleanup
+
+** Soundness of the solver needs to be proved

@@ -1,4 +1,4 @@
-% Created 2020-05-31 Sun 16:09
+% Created 2020-05-31 Sun 16:35
 % Intended LaTeX compiler: pdflatex
 \documentclass[presentation]{beamer}
 \usepackage[utf8]{inputenc}
@@ -20,10 +20,10 @@
 \usetheme{boxes}
 \author{Jeffrey Young}
 \date{2020-05-31}
-\title{Writing Beamer presentations in org-mode}
+\title{VSAT: What is Next}
 \hypersetup{
  pdfauthor={Jeffrey Young},
- pdftitle={Writing Beamer presentations in org-mode},
+ pdftitle={VSAT: What is Next},
  pdfkeywords={},
  pdfsubject={},
  pdfcreator={Emacs 26.3 (Org mode 9.3.6)},
@@ -37,9 +37,9 @@
 
 
 \section{Review: The Algorithm}
-\label{sec:org8b090a6}
+\label{sec:org8c3bc95}
 
-\begin{frame}[label={sec:orgf9444c8}]{The Algorithm}
+\begin{frame}[label={sec:org4d2e1b5}]{The Algorithm}
 \tikzstyle{na} = [baseline=-.5ex]
 \tikzstyle{every picture}+=[remember picture]
 
@@ -85,35 +85,53 @@
 
 
 \section{Possible directions}
-\label{sec:org804e2eb}
+\label{sec:orgc131194}
 
 \subsection{Improve Performance}
-\label{sec:org7cf241e}
+\label{sec:org39f7dec}
 
-\begin{frame}[label={sec:orgc74b294}]{Methods}
-\begin{block}{Migrate from sbv}
+\begin{frame}[label={sec:org251f047}]{Migrate away from sbv}
+\begin{block}{How}
+Implement a type system instead of using symbolic execution engine
 \end{block}
-\begin{block}{Improve sbv}
+
+\begin{block}{Impact}
+\begin{itemize}
+\item Simpler more general implementation
+\item Allow others to more easily implement a variational solver
+\end{itemize}
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org515433a}]{Benefits}
-\begin{block}{More possible application areas}
+
+\begin{frame}[label={sec:org5c73560}]{Improve sbv itself}
+\begin{block}{How (already in progress)}
+\begin{itemize}
+\item Implement a benchmark library for sbv (Done)
+\item Identify and reduce hot spots
+\item The VSAT project has already contributed 4 PRs to sbv itself
+\end{itemize}
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org5c081e7}]{Costs}
+
+\begin{frame}[label={sec:org6c3dd08}]{Costs}
 \begin{block}{Lots of engineering work}
 \end{block}
 \end{frame}
 
 \subsection{Extend Applications}
-\label{sec:org0ddd78a}
+\label{sec:org5f44031}
 
-\begin{frame}[label={sec:org3fcd6fc}]{Methods}
+\begin{frame}[label={sec:org32f856c}]{Methods}
+\begin{block}{Reuse paper survery from Jeff's Qualifier exam}
+\end{block}
+
+\begin{block}{Thomas' ideas + Feedback from SPLC community}
+\end{block}
 \end{frame}
 
-\begin{frame}[label={sec:orga09e69c}]{Benefits}
+\begin{frame}[label={sec:orge196c4f}]{Benefits}
 \begin{block}{Better Marketing}
 \end{block}
 
@@ -125,17 +143,23 @@
 
 \begin{block}{Increases impact of any future papers}
 \end{block}
+
+\begin{block}{Work is focused on paper's rather than engineering or science}
+\end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org54b2c0c}]{Costs}
+\begin{frame}[label={sec:org979dea1}]{Costs}
 \begin{block}{Opportunity cost with respect to other directions}
+\end{block}
+
+\begin{block}{Could artificially restrict contribution}
 \end{block}
 \end{frame}
 
 \subsection{Abstract the Algorithm}
-\label{sec:org164412a}
+\label{sec:org3697f00}
 
-\begin{frame}[label={sec:org553aac5}]{Idea}
+\begin{frame}[label={sec:orge5f0d29}]{Idea}
 \begin{itemize}
 \item Abstract the VSAT algorithm away from SAT solvers
 \item Abstract the function calls in VSAT
@@ -143,13 +167,22 @@
 \end{frame}
 
 
-\begin{frame}[label={sec:org2f35f53}]{Benefits}
+\begin{frame}[label={sec:org4df75fb}]{Benefits}
 \begin{block}{Better impact than just a SAT solver}
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org2089906}]{Costs}
+\begin{frame}[label={sec:org3b08328}]{Costs}
 \begin{block}{Opportunity cost with respect to other directions}
 \end{block}
 \end{frame}
+
+\section{Technical Debt}
+\label{sec:org41dcd7c}
+
+\subsection{Tool needs a lot of cleanup}
+\label{sec:orgffee300}
+
+\subsection{Soundness of the solver needs to be proved}
+\label{sec:org08723af}
 \end{document}
