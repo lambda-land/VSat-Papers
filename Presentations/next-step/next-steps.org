@@ -1,0 +1,117 @@
+#+TITLE:     Writing Beamer presentations in org-mode
+#+AUTHOR:    Jeffrey Young
+#+EMAIL:     youngjef@oregonstate.edu
+#+DATE:      2020-05-31
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+BEAMER_FRAME_LEVEL: 2
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [presentation]
+#+BEAMER_THEME: boxes
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:https://orgmode.org/org-info.js
+#+LATEX_HEADER: \input{header}
+
+* Review: The Algorithm
+
+** The Algorithm                                                    :B_frame:
+   :PROPERTIES:
+   :BEAMER_env: frame
+   :END:
+   #+Name: Overview
+   #+begin_export latex
+    \tikzstyle{na} = [baseline=-.5ex]
+    \tikzstyle{every picture}+=[remember picture]
+
+    \begin{itemize}[<+-| alert@+>]
+        \item Coriolis acceleration
+            \tikz[na] \node[coordinate] (n1) {};
+    \end{itemize}
+
+    % Below we mix an ordinary equation with TikZ nodes. Note that we have to
+    % adjust the baseline of the nodes to get proper alignment with the rest of
+    % the equation.
+    \begin{equation*}
+    \vec{a}_p = \vec{a}_o+\frac{{}^bd^2}{dt^2}\vec{r} +
+            \tikz[baseline]{
+                \node[fill=blue!20,anchor=base] (t1)
+                {$ 2\vec{\omega}_{ib}\times\frac{{}^bd}{dt}\vec{r}$};
+            } +
+            \tikz[baseline]{
+                \node[fill=red!20, ellipse] (t2)
+                {$\vec{\alpha}_{ib}\times\vec{r}$};
+            } +
+            \tikz[baseline]{
+                \node[fill=green!20,anchor=base] (t3)
+                {$\vec{\omega}_{ib}\times(\vec{\omega}_{ib}\times\vec{r})$};
+            }
+    \end{equation*}
+
+    \begin{itemize}[<+-| alert@+>]
+        \item Transversal acceleration
+            \tikz[na]\node [coordinate] (n2) {};
+        \item Centripetal acceleration
+            \tikz[na]\node [coordinate] (n3) {};
+    \end{itemize}
+
+    % Now it's time to draw some edges between the global nodes. Note that we
+    % have to apply the 'overlay' style.
+    \begin{tikzpicture}[overlay]
+            \path[->]<1-> (n1) edge [bend left] (t1);
+            \path[->]<2-> (n2) edge [bend right] (t2);
+            \path[->]<3-> (n3) edge [out=0, in=-90] (t3);
+    \end{tikzpicture}
+   #+end_export
+
+
+* Possible directions
+
+** Improve Performance
+
+*** Methods
+**** Migrate from sbv
+**** Improve sbv
+
+*** Benefits
+
+**** More possible application areas
+
+*** Costs
+
+**** Lots of engineering work
+
+** Extend Applications
+
+*** Methods
+
+*** Benefits
+
+**** Better Marketing
+
+**** More Collaborators
+
+**** More Papers
+
+**** Increases impact of any future papers
+
+*** Costs
+
+**** Opportunity cost with respect to other directions
+
+** Abstract the Algorithm
+
+*** Idea
+    - Abstract the VSAT algorithm away from SAT solvers
+    - Abstract the function calls in VSAT
+
+
+*** Benefits
+
+**** Better impact than just a SAT solver
+
+*** Costs
+
+**** Opportunity cost with respect to other directions

@@ -1,0 +1,155 @@
+% Created 2020-05-31 Sun 16:09
+% Intended LaTeX compiler: pdflatex
+\documentclass[presentation]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage{minted}
+\AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
+\input{header}
+\usetheme{boxes}
+\author{Jeffrey Young}
+\date{2020-05-31}
+\title{Writing Beamer presentations in org-mode}
+\hypersetup{
+ pdfauthor={Jeffrey Young},
+ pdftitle={Writing Beamer presentations in org-mode},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.3 (Org mode 9.3.6)},
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\begin{frame}{Outline}
+\tableofcontents
+\end{frame}
+
+
+\section{Review: The Algorithm}
+\label{sec:org8b090a6}
+
+\begin{frame}[label={sec:orgf9444c8}]{The Algorithm}
+\tikzstyle{na} = [baseline=-.5ex]
+\tikzstyle{every picture}+=[remember picture]
+
+\begin{itemize}[<+-| alert@+>]
+    \item Coriolis acceleration
+        \tikz[na] \node[coordinate] (n1) {};
+\end{itemize}
+
+% Below we mix an ordinary equation with TikZ nodes. Note that we have to
+% adjust the baseline of the nodes to get proper alignment with the rest of
+% the equation.
+\begin{equation*}
+\vec{a}_p = \vec{a}_o+\frac{{}^bd^2}{dt^2}\vec{r} +
+        \tikz[baseline]{
+            \node[fill=blue!20,anchor=base] (t1)
+            {$ 2\vec{\omega}_{ib}\times\frac{{}^bd}{dt}\vec{r}$};
+        } +
+        \tikz[baseline]{
+            \node[fill=red!20, ellipse] (t2)
+            {$\vec{\alpha}_{ib}\times\vec{r}$};
+        } +
+        \tikz[baseline]{
+            \node[fill=green!20,anchor=base] (t3)
+            {$\vec{\omega}_{ib}\times(\vec{\omega}_{ib}\times\vec{r})$};
+        }
+\end{equation*}
+
+\begin{itemize}[<+-| alert@+>]
+    \item Transversal acceleration
+        \tikz[na]\node [coordinate] (n2) {};
+    \item Centripetal acceleration
+        \tikz[na]\node [coordinate] (n3) {};
+\end{itemize}
+
+% Now it's time to draw some edges between the global nodes. Note that we
+% have to apply the 'overlay' style.
+\begin{tikzpicture}[overlay]
+        \path[->]<1-> (n1) edge [bend left] (t1);
+        \path[->]<2-> (n2) edge [bend right] (t2);
+        \path[->]<3-> (n3) edge [out=0, in=-90] (t3);
+\end{tikzpicture}
+\end{frame}
+
+
+\section{Possible directions}
+\label{sec:org804e2eb}
+
+\subsection{Improve Performance}
+\label{sec:org7cf241e}
+
+\begin{frame}[label={sec:orgc74b294}]{Methods}
+\begin{block}{Migrate from sbv}
+\end{block}
+\begin{block}{Improve sbv}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org515433a}]{Benefits}
+\begin{block}{More possible application areas}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org5c081e7}]{Costs}
+\begin{block}{Lots of engineering work}
+\end{block}
+\end{frame}
+
+\subsection{Extend Applications}
+\label{sec:org0ddd78a}
+
+\begin{frame}[label={sec:org3fcd6fc}]{Methods}
+\end{frame}
+
+\begin{frame}[label={sec:orga09e69c}]{Benefits}
+\begin{block}{Better Marketing}
+\end{block}
+
+\begin{block}{More Collaborators}
+\end{block}
+
+\begin{block}{More Papers}
+\end{block}
+
+\begin{block}{Increases impact of any future papers}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org54b2c0c}]{Costs}
+\begin{block}{Opportunity cost with respect to other directions}
+\end{block}
+\end{frame}
+
+\subsection{Abstract the Algorithm}
+\label{sec:org164412a}
+
+\begin{frame}[label={sec:org553aac5}]{Idea}
+\begin{itemize}
+\item Abstract the VSAT algorithm away from SAT solvers
+\item Abstract the function calls in VSAT
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[label={sec:org2f35f53}]{Benefits}
+\begin{block}{Better impact than just a SAT solver}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org2089906}]{Costs}
+\begin{block}{Opportunity cost with respect to other directions}
+\end{block}
+\end{frame}
+\end{document}
