@@ -1,0 +1,50 @@
+* Notes
+** change plain set for several new terms
+** heuristics to determine whether or not a better encoding would matter
+** use the vcore to derive a more optimal vpl formula
+** Minimize variational core problem
+** Improve variational formulas to variational formulas
+*** Given a v-formula, reorder it to be better
+** Incremental VSAT
+*** skip
+** Applications
+*** Everywhere SATs are used in SPL community
+*** take paper that has tool
+**** run tool on data
+**** tech diff, trace the sat problems
+*** hack type chef
+**** to spit out sat problems for vsat
+*** Partial evaluation
+**** Partial evaluation of linkers
+
+** Summary
+
+*** Further evaluation
+
+*** Novel ways to use what we already have
+
+*** Working on an algorithm for better encoding
+
+*** Extending what we already have
+
+** Must do
+
+*** Maximize the sharing
+
+**** shared sub-expression minimization
+
+** Next paper
+
+*** journal paper
+
+**** Three dimensions of contributions:
+
+***** new applications
+
+***** type chef benchmarks
+
+***** new implementation technique: concurrency
+
+***** Optional: proof of soundness
+
+** Send a summary of the conversation

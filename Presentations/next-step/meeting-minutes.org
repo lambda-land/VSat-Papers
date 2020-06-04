@@ -1,0 +1,107 @@
+#+TITLE:     VSAT: Next Steps Meeting minutes
+#+AUTHOR:    Jeffrey Young, Thomas Thüm, Eric Walkingshaw
+#+EMAIL:     youngjef@oregonstate.edu
+#+DATE:      2020-06-04
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   H:2 TeX:t LaTeX:t
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [presentation]
+#+latex_header: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
+#+LATEX_HEADER: \input{header}
+
+
+* Immediate Next Steps
+
+** Journal Paper Based using Type Chef
+
+*** The idea
+    Hack Type Chef to produce a set of vpl formulas which serve as benchmarks
+    for vsat and simultaneously as example new applications for vsat
+
+*** Contributions
+    - More evaluation of variational solving
+    - Extend vsat with concurrency model
+    - Could evaluate several types of solvers
+    - Optional: proof of soundness
+    - Optional: but likely, Add SMT theories
+
+* Interesting Future Problems
+
+** Encoding Problems
+
+*** The Problem: Find a global optimized variational formula
+    - 2 kinds based on inputs:
+      - set of plain formulas
+      - a variational formula
+    - Output: Optimized variational formula
+
+*** Possible Methods
+    - Discover/Define Heuristics
+    - Find Heuristic to decide _when_ optimization is worth it
+    - Use the solver to call _simplify_?
+
+
+** Optimizing a variational core itself
+
+*** Problem
+    A VCore may be able to be re-ordered to allow more symbolic evaluation
+
+*** What is the performance impact of this reordering?
+
+*** Could also solve the input encoding problem
+    - Given a VCore, run the interpreter backwards to produce a vpl formula
+      - Will the resulting vpl be more optimal?
+
+** New ways to use the solver
+
+*** Abstract the Sat call
+    Instead of only allowing ~isSAT~ allow any ~SMTLIB2~ similar supported
+    tactic, e.g., ~codeGen~, ~simplify~ etc..
+
+*** Use the variational core to produce ~z3,abc,boolector,cvc4~ programs for variants
+
+*** Extend with Formula Choice Calculus
+    - Could directly encode cross-tree constraints or context dependent choices
+    - more expressive but would require more ~SAT~ calls
+      - open question on if these ~SAT~ calls would dominate the runtime
+
+** New ways to use the solver, Cont.
+
+*** Encode new variational Analyses with only atomic choice calculus
+    - examples of _variational_ dead/core...any SPL analysis or a combination of
+      them in a single run
+
+*** Treat the Variational Core as a first class data object
+    - User could incrementally add to it
+    - User could save/load/transfer the core
+    - User could take the same core, solve it, generate code for it, or use some
+      other SMTLIB2 tactic
+
+* Future Work
+
+** Incrementalize the variational solver
+   - allow the variational core to _grow_ incrementally
+   - Problem: plain terms will be symbolically executed an may be impacted by the incremental addition
+
+** Read literature on Partial Evaluation
+   - create a variational programming language which exploits a JIT
+   - Language compiles to a _variational_ binary and then exploits a linker to
+     hot-swap _without_ recompiling
+     - Evaluation: JIT
+     - Accumulation: ??
+     - Selection/Configuration: use the plain linker + variational binary
+     - See: Racket linkets, scheme modules, common-lisp fasl
+
+** Type system instead of symbolic execution
+   - Choices are seen as the converse of parentheses
+   - Or, could use a substructural type system to track the variation
+   - Implement in Idris 2 and use indexed types
+   - Or, implement in haskell using indexed Monads
+
+** Delimited continuations instead of symbolic execution
+   - Only good for batch processing
+   - The idea is the use continuations to backtrack rather than symbolic execution
+   - Likely to be extremely fast

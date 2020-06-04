@@ -1,4 +1,4 @@
-% Created 2020-05-31 Sun 16:35
+% Created 2020-06-04 Thu 15:31
 % Intended LaTeX compiler: pdflatex
 \documentclass[presentation]{beamer}
 \usepackage[utf8]{inputenc}
@@ -37,62 +37,334 @@
 
 
 \section{Review: The Algorithm}
-\label{sec:org8c3bc95}
+\label{sec:org388f87a}
 
-\begin{frame}[label={sec:org4d2e1b5}]{The Algorithm}
-\tikzstyle{na} = [baseline=-.5ex]
-\tikzstyle{every picture}+=[remember picture]
+\begin{frame}[label={sec:orgccc328b}]{The Algorithm: Architecture}
+% layers
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfdeclarelayer{background,main,foreground}
 
-\begin{itemize}[<+-| alert@+>]
-    \item Coriolis acceleration
-        \tikz[na] \node[coordinate] (n1) {};
-\end{itemize}
+% styles
+\tikzstyle{nd}=[rectangle, draw, fill=white, text width=7em,text centered, minimum height=2.5em, scale=0.8]
+\tikzstyle{ann}=[above, text width=5em]
+\tikzstyle{lbl} = [scale=0.8,text width=7em, text centered]
+ \def\blockdist{2.3}
+ \def\edgedist{2.5}
 
-% Below we mix an ordinary equation with TikZ nodes. Note that we have to
-% adjust the baseline of the nodes to get proper alignment with the rest of
-% the equation.
-\begin{equation*}
-\vec{a}_p = \vec{a}_o+\frac{{}^bd^2}{dt^2}\vec{r} +
-        \tikz[baseline]{
-            \node[fill=blue!20,anchor=base] (t1)
-            {$ 2\vec{\omega}_{ib}\times\frac{{}^bd}{dt}\vec{r}$};
-        } +
-        \tikz[baseline]{
-            \node[fill=red!20, ellipse] (t2)
-            {$\vec{\alpha}_{ib}\times\vec{r}$};
-        } +
-        \tikz[baseline]{
-            \node[fill=green!20,anchor=base] (t3)
-            {$\vec{\omega}_{ib}\times(\vec{\omega}_{ib}\times\vec{r})$};
-        }
-\end{equation*}
+ \begin{picture}(320,200)
+ % \put(-14, 5){
+ \put(-14, -10){
+ \begin{tikzpicture}[node distance=4.5cm,>=latex']
+  %% Nodes
+  \node (toIL)  [nd] {Parse to IL};
+  \node (AccEv) [nd, right of=toIR]  {Evaluation \\ Accumulation};
+  \node (input) [lbl, above=0.5cm of toIL] {vpl};
 
-\begin{itemize}[<+-| alert@+>]
-    \item Transversal acceleration
-        \tikz[na]\node [coordinate] (n2) {};
-    \item Centripetal acceleration
-        \tikz[na]\node [coordinate] (n3) {};
-\end{itemize}
+  \node (solve) [nd, right of=AccEv] {Solve VCore};
+  \node (VModel) [nd, below=2.5cm of solve] {VModel \\ Constructor};
+  \node (output) [lbl, below=0.5cm of VModel] {Variational \\ Model};
 
-% Now it's time to draw some edges between the global nodes. Note that we
-% have to apply the 'overlay' style.
-\begin{tikzpicture}[overlay]
-        \path[->]<1-> (n1) edge [bend left] (t1);
-        \path[->]<2-> (n2) edge [bend right] (t2);
-        \path[->]<3-> (n3) edge [out=0, in=-90] (t3);
+  %% Arrows
+  \draw [draw, ->] (input) -- node {} (toIL);
+  \draw [draw, ->] (toIL) -- node {} (AccEv);
+  \draw [draw, ->] (AccEv) -- node {} (solve);
+  \path[]
+    (solve) edge [->,bend right=45] node {} (VModel)
+    (solve) edge [->,bend right=35] node {} (VModel)
+    (solve) edge [->,bend right=25] node {} (VModel)
+
+    (solve) edge [->,bend left=25] node {} (VModel)
+    (solve) edge [->,bend left=35] node {} (VModel)
+    (solve) edge [->,bend left=45] node {} (VModel);
+  \draw [draw, ->] (VModel) -- node {} (output);
 \end{tikzpicture}
+}
+\end{picture}
+\begin{block}{\phantom{m}}
+\end{block}
 \end{frame}
 
+\begin{frame}[label={sec:org05038aa}]{The Algorithm: But Really}
+% layers
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfdeclarelayer{background,main,foreground}
+
+% styles
+% \tikzstyle{nd}=[rectangle, fill=blue!20, text width=7em,text centered, minimum height=2.5em]
+\tikzstyle{nd}=[rectangle, draw, fill=white, text width=7em,text centered, minimum height=2.5em, scale=0.8]
+\tikzstyle{ann}=[above, text width=5em]
+\tikzstyle{lbl} = [scale=0.8,text width=7em, text centered]
+ \def\blockdist{2.3}
+ \def\edgedist{2.5}
+
+ \begin{picture}(320,200)
+ \put(-25, -10){
+ \begin{tikzpicture}[node distance=4.5cm,>=latex']
+  %% Nodes
+  \node (toIL)  [nd] {Parse to IL};
+  \node (AccEv) [nd, right of=toIR]  {Evaluation \\ Accumulation};
+  \node (input) [lbl, above=0.5cm of toIL] {vpl};
+  \node (pls)   [lbl, above right=0.25cm of input] {$\{pl_{0}, pl_{1}, \ldots pl_{n}\}$};
+  %%\node (VModel) [nd] at (7.2,-2) {VModel \\ Constructor};
+
+  \node (solve) [nd, right of=AccEv] {Solve VCore};
+  \node (VModel) [nd, below=2.5cm of solve] {VModel \\ Constructor};
+  \node (output) [lbl, below=0.5cm of VModel] {Variational \\ Model};
+
+  %% labels
+  \node (SymExlbl) [lbl, below right=0.3cm and -0.5cm of toIL] {Symbolic \\ Execution};
+  \node (Solvelbl) [lbl, right=-0.3cm of solve] {Actual \\ Execution};
+  \node (sbvLbl)   [lbl, below=0.45cm of SymExlbl] {SBV};
+
+  %% Arrows
+  \draw [draw, ->] (input) -- node {} (toIL);
+  \draw [draw, ->] (toIL) -- node {} (AccEv);
+  \draw [draw, ->] (AccEv) -- node {} (solve);
+  \path[]
+    (solve) edge [->,bend right=45] node {} (VModel)
+    (solve) edge [->,bend right=35] node {} (VModel)
+    (solve) edge [->,bend right=25] node {} (VModel)
+
+    (solve) edge [->,bend left=25] node {} (VModel)
+    (solve) edge [->,bend left=35] node {} (VModel)
+    (solve) edge [->,bend left=45] node {} (VModel);
+  \draw [draw, ->] (VModel) -- node {} (output);
+  \path[]
+    (pls) edge [->,bend right=45] node {} (input)
+    (pls) edge [->,bend right=35] node {} (input)
+    (pls) edge [->,bend right=25] node {} (input);
+
+
+ %% Background
+ \begin{pgfonlayer}{background}
+   % sym ex
+   \path (toIL.west |- AccEv.north)+(-0.25,0.3) node (a) {};
+   \path (SymExlbl.south -| AccEv.east)+(0.25,0.0) node (b) {};
+
+   % act ex
+   \path (solve.north west)+(-0.125,0.15) node (c) {};
+   \path (Solvelbl.south east)+(-0.3,-0.15) node (d) {};
+
+   % sbv
+   \path (sbvLbl.south -| Solvelbl. sourth east)+(-0.3,-0.15) node (e) {};
+
+   % boxes
+   \path[fill=blue!20,rounded corners, draw=black!50, dashed] (a) rectangle (e);
+   \path[fill=yellow!20,rounded corners, draw=black!50, dashed] (a) rectangle (b);
+   \path[fill=red!20,rounded corners, draw=black!50, dashed] (c) rectangle (d);
+
+   % \node[background, fill=blue!20, draw=black!20, dashed, rounded corners
+   % , fit={(frontend) (toIL) (AccEV) ($(solve.west)+(3.0,-1.5)$)}, label=below:sbv] {};
+   % \node[background, fill=yellow!20, draw=black!50, dashed, rounded corners, fit=(toIL) (AccEv), label=below:\nodeSymbolic Execution] {};
+   % \node[background, fill=red!20, draw=black!50, dashed, rounded corners, fit=(solve) (solve), label=right:Actual \\ Execution] {};
+
+ \end{pgfonlayer}
+
+\end{tikzpicture}
+}
+\end{picture}
+
+\begin{block}{\phantom{m}}
+\end{block}
+\end{frame}
+\begin{frame}[label={sec:org3386365}]{The Algorithm: Which means}
+% layers
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfdeclarelayer{background,main,foreground}
+
+% styles
+% \tikzstyle{nd}=[rectangle, fill=blue!20, text width=7em,text centered, minimum height=2.5em]
+\tikzstyle{nd}=[rectangle, draw, fill=white, text width=7em,text centered, minimum height=2.5em, scale=0.8]
+\tikzstyle{ann}=[above, text width=5em]
+\tikzstyle{lbl} = [scale=0.8,text width=7em, text centered]
+ \def\blockdist{2.3}
+ \def\edgedist{2.5}
+
+ \begin{picture}(320,200)
+ \put(-25, -10){
+ \begin{tikzpicture}[node distance=4.5cm,>=latex']
+  %% Nodes
+  \node (toIL)  [nd] {Parse to IL};
+  \node (AccEv) [nd, right of=toIR]  {Evaluation \\ Accumulation};
+  \node (input) [lbl, above=0.5cm of toIL] {vpl};
+  \node (pls)   [lbl, above right=0.25cm of input] {$\{pl_{0}, pl_{1}, \ldots pl_{n}\}$};
+  %%\node (VModel) [nd] at (7.2,-2) {VModel \\ Constructor};
+
+  \node (solve) [nd, right of=AccEv] {Solve VCore};
+  \node (VModel) [nd, below=2.5cm of solve] {VModel \\ Constructor};
+  \node (output) [lbl, below=0.5cm of VModel] {Variational \\ Model};
+
+  %% labels
+  \node (SymExlbl) [lbl, below right=0.3cm and -0.5cm of toIL] {Symbolic \\ Execution};
+  \node (Solvelbl) [lbl, right=-0.3cm of solve] {Actual \\ Execution};
+  \node (sbvLbl)   [lbl, below=0.45cm of SymExlbl] {SBV};
+
+  %% Arrows
+  \draw [draw, ->] (input) -- node {} (toIL);
+  \draw [draw, ->] (toIL) -- node {} (AccEv);
+  \draw [draw, ->] (AccEv) -- node {} (solve);
+  \path[]
+    (solve) edge [->,bend right=45] node {} (VModel)
+    (solve) edge [->,bend right=35] node {} (VModel)
+    (solve) edge [->,bend right=25] node {} (VModel)
+
+    (solve) edge [->,bend left=25] node {} (VModel)
+    (solve) edge [->,bend left=35] node {} (VModel)
+    (solve) edge [->,bend left=45] node {} (VModel);
+  \draw [draw, ->] (VModel) -- node {} (output);
+  \path[]
+    (pls) edge [->,bend right=45] node {} (input)
+    (pls) edge [->,bend right=35] node {} (input)
+    (pls) edge [->,bend right=25] node {} (input);
+
+
+ %% Background
+ \begin{pgfonlayer}{background}
+   % sym ex
+   \path (toIL.west |- AccEv.north)+(-0.25,0.3) node (a) {};
+   \path (SymExlbl.south -| AccEv.east)+(0.25,0.0) node (b) {};
+
+   % act ex
+   \path (solve.north west)+(-0.125,0.15) node (c) {};
+   \path (Solvelbl.south east)+(-0.3,-0.15) node (d) {};
+
+   % sbv
+   \path (sbvLbl.south -| Solvelbl. sourth east)+(-0.3,-0.15) node (e) {};
+
+   % boxes
+   \path[fill=blue!20,rounded corners, draw=black!50, dashed] (a) rectangle (e);
+   \path[fill=yellow!20,rounded corners, draw=black!50, dashed] (a) rectangle (b);
+   \path[fill=red!20,rounded corners, draw=black!50, dashed] (c) rectangle (d);
+
+   % \node[background, fill=blue!20, draw=black!20, dashed, rounded corners
+   % , fit={(frontend) (toIL) (AccEV) ($(solve.west)+(3.0,-1.5)$)}, label=below:sbv] {};
+   % \node[background, fill=yellow!20, draw=black!50, dashed, rounded corners, fit=(toIL) (AccEv), label=below:\nodeSymbolic Execution] {};
+   % \node[background, fill=red!20, draw=black!50, dashed, rounded corners, fit=(solve) (solve), label=right:Actual \\ Execution] {};
+
+ \end{pgfonlayer}
+
+\end{tikzpicture}
+}
+\end{picture}
+
+\begin{block}{Coupling!}
+\begin{itemize}
+\item sbv responsible for \textasciitilde{}90\% of runtime performance
+\end{itemize}
+\end{block}
+\end{frame}
+
+\section{Essential steps}
+\label{sec:org8d1420a}
+
+\begin{frame}[label={sec:org6bb5b89}]{Input}
+% layers
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfdeclarelayer{background,main,foreground}
+
+% styles
+% \tikzstyle{nd}=[rectangle, fill=blue!20, text width=7em,text centered, minimum height=2.5em]
+\tikzstyle{nd}=[rectangle, draw, fill=white, text width=7em,text centered, minimum height=2.5em, scale=0.8]
+\tikzstyle{ann}=[above, text width=5em]
+\tikzstyle{lbl} = [scale=0.8,text width=7em, text centered]
+ \def\blockdist{2.3}
+ \def\edgedist{2.5}
+
+ \begin{picture}(320,100)
+ \put(0, 0){
+ \begin{tikzpicture}
+ \node (pls) {%
+ $\begin{aligned}
+ \color{blue}c_{0.0} &\wedge c_{0.1} \wedge c_{0.2} \ldots c_{0.n}\\
+ c_{1.0} &\wedge \textcolor{red}{c_{1.1}} \wedge c_{1.2} \ldots c_{1.n}\\
+ \vdots\\
+ c_{m.0} &\wedge \textcolor{blue}{c_{m.1}} \wedge c_{m.2} \ldots c_{m.n}
+ \end{aligned}$};
+% \begin{tikzpicture}[node distance=4.5cm,>=latex']
+%  %% Nodes
+  % \node (input) [lbl] at (8,-10) {vpl};
+  \node (input) [lbl, right=3cm of pls] {vpl};
+  %% Arrows
+  \path[]
+    (pls) edge [->,bend right=45] node {} (input)
+    (pls) edge [->,bend right=35] node {} (input)
+    (pls) edge [->,bend right=25] node {} (input);
+\end{tikzpicture}
+}
+\end{picture}
+
+\begin{block}{Way to identify shared vs non-shared terms}
+\begin{itemize}
+\item Transform set of plain formulas to a vpl formula
+\end{itemize}
+\end{block}
+
+\begin{block}{Possible performance gains}
+\begin{itemize}
+\item How to find quality encoding, Relation to BDD work?
+\item High impact for other areas of applied choice calculus
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org39fe254}]{Variational Core}
+\begin{picture}(320,250)
+\put(6,116){\begin{tikzpicture}
+\Tree [.$\vee$ [.$\vee$ [.$\chc[A]{}$ ] [. $s_{0}$ ] ]
+      [.$\wedge$ [.$\chc[D]{}$ ][.$\wedge$ [. $\chc[B]{}$ ][ .$s_{1}$ ] ] ] ]
+\end{tikzpicture}}
+\put(150,220){\begin{minipage}[t]{0.6\linewidth}
+\begin{itemize}
+    \item Essential structure of variation in the input
+    \item Way to soundly compile plain sub-trees to either a promised computation (Accumulation)
+    \item Way to soundly compile plain sub-trees to a result (Evaluation)
+    \item Way to select an alternative in the Variational Core
+\end{itemize}
+\end{minipage}}
+\end{picture}
+\end{frame}
+\begin{frame}[label={sec:org2a36313}]{Variational Core: Add a new variant}
+\begin{picture}(320,150)
+\put(0,80){
+   \begin{tikzpicture}
+   \node (old) {\Tree [.$\vee$ [.$\vee$ [.$\chc[A]{}$ ] [. $s_{0}$ ] ]
+                            [.$\wedge$ [.$\chc[D]{}$ ][.$\wedge$ [. $\chc[B]{}$ ][ .$s_{1}$ ] ] ] ]};
+   \node (wedge) [right=0.25cm of old] {$\bigwedge$};
+   \node (new) [right=0.25cm of wedge] {$c_{m+1.0} \wedge \textcolor{blue}{\chc[C]{c_{m+1.2},T}} \wedge \ldots \wedge c_{m+1.n}$}
+   \end{tikzpicture}}
+\end{picture}
+\begin{block}{plain terms cached from previous variational core.}
+\end{block}
+\begin{block}{Thus will be looked up during evaluation/accumulation}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:orgf0a60de}]{Variational Core: Add new variants}
+\begin{picture}(320,150)
+\put(0,10){
+   \begin{tikzpicture}
+
+   \Tree [.$\wedge$ [.$\vee$ [.$\vee$ [.$\chc[A]{}$ ] [. $s_{0}$ ] ]
+                      [.$\wedge$ [.$\chc[D]{}$ ][.$\wedge$ [. $\chc[B]{}$ ][ .$s_{1}$ ] ] ] ]
+         .NP \node(wh)[rectangle,fill=blue!20,draw,minimum height=20mm, yshift=-2em]{\textcolor{blue}{$VCore_{m+1}$}};]
+   \end{tikzpicture}}
+\end{picture}
+\begin{block}{\phantom{m}}
+\end{block}
+\begin{block}{\phantom{m}}
+\end{block}
+\end{frame}
 
 \section{Possible directions}
-\label{sec:orgc131194}
+\label{sec:orgb37f0b5}
 
-\subsection{Improve Performance}
-\label{sec:org39f7dec}
-
-\begin{frame}[label={sec:org251f047}]{Migrate away from sbv}
-\begin{block}{How}
-Implement a type system instead of using symbolic execution engine
+\begin{frame}[label={sec:orgda183af}]{Improve Performance}
+\begin{block}{Migrate away from sbv}
+\begin{block}{By implement a type system instead of using symbolic execution engine}
 \end{block}
 
 \begin{block}{Impact}
@@ -101,10 +373,10 @@ Implement a type system instead of using symbolic execution engine
 \item Allow others to more easily implement a variational solver
 \end{itemize}
 \end{block}
-\end{frame}
+\end{block}
 
 
-\begin{frame}[label={sec:org5c73560}]{Improve sbv itself}
+\begin{block}{Improve sbv itself}
 \begin{block}{How (already in progress)}
 \begin{itemize}
 \item Implement a benchmark library for sbv (Done)
@@ -112,77 +384,65 @@ Implement a type system instead of using symbolic execution engine
 \item The VSAT project has already contributed 4 PRs to sbv itself
 \end{itemize}
 \end{block}
-\end{frame}
-
-
-\begin{frame}[label={sec:org6c3dd08}]{Costs}
 \begin{block}{Lots of engineering work}
 \end{block}
-\end{frame}
-
-\subsection{Extend Applications}
-\label{sec:org5f44031}
-
-\begin{frame}[label={sec:org32f856c}]{Methods}
-\begin{block}{Reuse paper survery from Jeff's Qualifier exam}
-\end{block}
-
-\begin{block}{Thomas' ideas + Feedback from SPLC community}
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:orge196c4f}]{Benefits}
-\begin{block}{Better Marketing}
+\begin{frame}[label={sec:org3be4787}]{Extend Applications}
+\begin{block}{How}
+\begin{itemize}
+\item Reuse paper survery from Jeff's Qualifier exam
+
+\item Thomas' ideas + Feedback from SPLC community
+\end{itemize}
 \end{block}
 
-\begin{block}{More Collaborators}
+\begin{block}{Benefits}
+\begin{itemize}
+\item Better Marketing
+\item More Collaborators
+\item More Papers
+\item Increases impact of any future papers
+\item Work is focused on papers rather than engineering or science
+\end{itemize}
 \end{block}
 
-\begin{block}{More Papers}
-\end{block}
 
-\begin{block}{Increases impact of any future papers}
-\end{block}
-
-\begin{block}{Work is focused on paper's rather than engineering or science}
+\begin{block}{Costs}
+\begin{itemize}
+\item Opportunity cost with respect to other directions
+\item Could artificially restrict contribution
+\end{itemize}
 \end{block}
 \end{frame}
 
-\begin{frame}[label={sec:org979dea1}]{Costs}
-\begin{block}{Opportunity cost with respect to other directions}
-\end{block}
-
-\begin{block}{Could artificially restrict contribution}
-\end{block}
-\end{frame}
-
-\subsection{Abstract the Algorithm}
-\label{sec:org3697f00}
-
-\begin{frame}[label={sec:orge5f0d29}]{Idea}
+\begin{frame}[label={sec:org49108d5}]{Abstract the Algorithm}
+\begin{block}{Idea}
 \begin{itemize}
 \item Abstract the VSAT algorithm away from SAT solvers
 \item Abstract the function calls in VSAT
 \end{itemize}
-\end{frame}
+\end{block}
 
 
-\begin{frame}[label={sec:org4df75fb}]{Benefits}
+\begin{block}{Benefits}
 \begin{block}{Better impact than just a SAT solver}
 \end{block}
-\end{frame}
+\end{block}
 
-\begin{frame}[label={sec:org3b08328}]{Costs}
+\begin{block}{Costs}
 \begin{block}{Opportunity cost with respect to other directions}
+\end{block}
 \end{block}
 \end{frame}
 
 \section{Technical Debt}
-\label{sec:org41dcd7c}
+\label{sec:org07223f8}
 
-\subsection{Tool needs a lot of cleanup}
-\label{sec:orgffee300}
+\begin{block}{Tool needs a lot of cleanup}
+\end{block}
 
-\subsection{Soundness of the solver needs to be proved}
-\label{sec:org08723af}
+\begin{block}{Soundness of the solver needs to be proved}
+\end{block}
 \end{document}
