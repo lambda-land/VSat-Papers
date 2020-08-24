@@ -29,7 +29,31 @@
 
 
 ### The Vsat tool
-You can find version of Vsat for this paper [here](https://github.com/doyougnu/VSat).
+You can find version of Vsat for this paper
+[here](https://github.com/doyougnu/VSat). To run the tool:
+1. Clone the repository, i.e., `git clone https://github.com/doyougnu/VSat`
+2. If you are using `nix` un-comment the following in `stack.yaml`:
+   ```
+   # ## uncomment the following lines to tell stack you are in a nix environment
+   # nix:
+   #   enable: true
+   #   pure: true
+   #   # packages: [ z3, pkgconfig, zlib, abc-verifier, cvc4, yices, boolector, haskellPackages.hoogle haskellPackages.hasktags]
+   #   packages: [ z3, pkgconfig, zlib ]
+   ```
+   if not then do not change `stack.yaml`
+3. You'll need to install `haskell`, `stack` and `cabal` to run the tool, if you
+   are using `nix` these derivations will be built for you with a nix-shell.
+   Please see the repository from 1, with instructions for your OS.
+4. Ensure you have the needed dependencies installed by running: `stack
+   --version` (stack), `ghc -v` (haskell), `cabal --help` (cabal)
+5. Ensure you have `z3` installed by running `z3 -h`, `vsat` requires `z3`
+   version 4.8.7 or greater.
+6. Ensure you can build `vsat` from source by running:
+   `stack build`
+7. If 6, did not result in an error then you should be able to run any command
+   in the next section without issue
+
 
 #### Benchmarking
 Run a benchmark using stack + gauge,e.g., `stack bench vsat:auto
@@ -57,9 +81,10 @@ The available benchmarks are listed benchmark targets in `package.yaml` in the v
     - `stack bench vsat:auto-diag --benchmark-arguments='+RTS -qg -A64m -AL128m -n8m -RTS --csv output-file.csv'`
 
 To retrieve the counts of sat vs unsat models you can count the disjuncted
-clauses in the resulting variational model. The papers cited in the paper come
-from a branch which only counted the outputs of the solver. This branch is
-called `SatUnsatCounting` in the vsat project github cited above.
+clauses in the resulting variational model. The numbers cited in the paper come
+from a branch which altered the benchmark source code to count the outputs of
+the solver. This branch is called `SatUnsatCounting` in the vsat project github
+cited above.
 
 #### Processing data
 We make available a julia script called `parseRaw.jl` to process the `csv` files
