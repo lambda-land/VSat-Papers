@@ -4,7 +4,7 @@
 ### Repository Layout
 - data for plots in the paper are in `data` directory
 - variational models for the void, dead and core analyses are in `data` directory as `json` files
-- Complete inference rules available in `rules.pdf` file in the `rules` directory
+- Complete [inference rules](https://github.com/lambda-land/VSat-Papers/blob/master/SPLC2020/rules/rules.pdf) available in `rules.pdf` file in the `rules` directory
 - We provide several files in the spirit of [reproducible
   research](https://en.wikipedia.org/wiki/Reproducibility#Reproducible_research),
   such that other researchers can not only reproduce our analysis but reproduce
