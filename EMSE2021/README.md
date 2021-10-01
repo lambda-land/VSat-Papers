@@ -2,7 +2,8 @@
 
 
 ### Repository Layout
-- data for plots in the paper are in `munged_data` directory
+- data for plots in the paper are in `munged_data` directory.
+- We also provide all raw data in the `raw_data` directory  as recorded from the output of the `gauge` benchmarking library.
 - variational models for the void, dead and core analyses are in `munged_data` directory as `json` files
 - We provide several files in the spirit of [reproducible
   research](https://en.wikipedia.org/wiki/Reproducibility#Reproducible_research),
