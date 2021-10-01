@@ -12,10 +12,10 @@
     - the `*.nix` files in the `nix` directory, pin the development environment
       used in the benchmarks and analysis to specific commits of `nixpkgs` which
       are dated for the time of publication. This allows researchers to create a
-      development environment identical to the one used in this paper for both
-      the `vsat` tool and for the statistics scripts, in a `nix-shell`; Use `>
-      nix-shell R.nix` for the `R` environment. To reproduce the haskell
-      environment we rely on the `stack` built tool
+      development environment identical to the one used in this paper for the
+      statistics scripts, in a `nix-shell`; Use `> nix-shell R.nix` for the `R`
+      environment. To reproduce the haskell environment we rely on the `stack`
+      build tool.
     - We provide the source code R scripts used in our evaluation in the
       `statisticsScripts` directory. The scripts are heavily commented.
     - The vsat tool can be built using either `cabal`, `stack`. Both allow a
@@ -24,11 +24,20 @@
       recommend `stack` for most cases because it pins the package set to a
       specific package set, whereas `cabal` uses the package set present on the
       user's computer.
+    - We also provide a small haskell implementation of the inference rules in
+      the `rules/VSAT.hs` file. If you are looking to build your own variational
+      solver, and want to learn the inference rules, this would be the simplest
+      place to start because it is just a pure, functional model, i.e., it
+      doesn't actually solve anything it just uses haskell's type system to show
+      the rules are sound. Once you are comfortable, you can view the rest of
+      the architecture in the `vsat` repo linked above.
 
 
 ### The Vsat tool
 You can find the version of Vsat for this paper
-[here](https://github.com/doyougnu/VSat). To run the tool:
+[here](https://github.com/doyougnu/VSat) and archived here:
+[![DOI](https://zenodo.org/badge/105307042.svg)](https://zenodo.org/badge/latestdoi/105307042)
+. To run the tool:
 1. Clone the repository, i.e., `git clone https://github.com/doyougnu/VSat`
 2. If you are using `nix` un-comment the following in `stack.yaml`:
    ```
